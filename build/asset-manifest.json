@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/ai-governance-dashboard/static/css/main.e6c13ad2.css",
+    "main.js": "/ai-governance-dashboard/static/js/main.380300f8.js",
+    "static/js/453.74d18455.chunk.js": "/ai-governance-dashboard/static/js/453.74d18455.chunk.js",
+    "index.html": "/ai-governance-dashboard/index.html",
+    "main.e6c13ad2.css.map": "/ai-governance-dashboard/static/css/main.e6c13ad2.css.map",
+    "main.380300f8.js.map": "/ai-governance-dashboard/static/js/main.380300f8.js.map",
+    "453.74d18455.chunk.js.map": "/ai-governance-dashboard/static/js/453.74d18455.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.380300f8.js"
+  ]
+}
