@@ -4,27 +4,21 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Dependencies
-node_modules/
-jspm_packages/
+node_modules
+dist
+dist-ssr
+*.local
 
-# Build
-build/
-dist/
-
-# Typescript
-typings/
-
-# Optional files
-.npm
-.eslintcache
-.node_repl_history
-*.tgz
-
-#IDE
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
 .idea
-.vscode
-
-# System files
 .DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
