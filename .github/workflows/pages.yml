@@ -31,11 +31,11 @@ jobs:
           node-version: lts/*
           cache: 'npm'
 
-      - name: Set Build Variables
-        run: |
-          REPO_NAME="${GITHUB_REPOSITORY##*/}"
-          echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
-          echo "BASE=/$REPO_NAME/" >> "$GITHUB_ENV"
+      # - name: Set Build Variables
+        # run: |
+          # REPO_NAME="${GITHUB_REPOSITORY##*/}"
+          # echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
+          # echo "BASE=/$REPO_NAME/" >> "$GITHUB_ENV"
       
 
       - name: Install dependencies
