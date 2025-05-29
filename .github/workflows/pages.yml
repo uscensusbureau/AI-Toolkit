@@ -1,9 +1,10 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Deploy to Pages Custom Action
 
 on:
   push:
     branches: ['main']
+  worflow_dispatch:
 
 
 permissions:
