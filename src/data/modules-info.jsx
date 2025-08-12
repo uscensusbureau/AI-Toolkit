@@ -22,6 +22,20 @@ const AI_MODULES_INFO = {
     questTitle: 'Responsible AI Compliance Questionnaire',
     color: '#9C27B0'
   },
+  [AI_MODULES.OMB]: {
+    title: 'OMB-M-25-21',
+    description: 'OMB-M-25-21 Model Specific AI Compliance Questions',
+    guideTitle: 'OMB-M-25-21 Compliance Guide',
+    questTitle: 'OMB-M-25-21 Compliance Questionnaire',
+    color: '#4CAF50'
+  },
+  [AI_MODULES.EO]: {
+    title: 'EO 14179',
+    description: 'EO 14179 Model Specific AI Compliance Questions',
+    guideTitle: 'EO 14179 Compliance Guide',
+    questTitle: 'EO 14179 Compliance Questionnaire',
+    color: '#4CAF50'
+  },
   [AI_MODULES.RISK]: {
     title: 'AI Risk Management',
     description: 'Identify, evaluate, respond to, and govern AI risks through the NIST AI Risk Management Framework.',
