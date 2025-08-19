@@ -22,18 +22,32 @@ const AI_MODULES_INFO = {
     questTitle: 'Responsible AI Compliance Questionnaire',
     color: '#9C27B0'
   },
-  [AI_MODULES.OMB]: {
+  [AI_MODULES.OMB_M25_21]: {
     title: 'OMB-M-25-21',
     description: 'OMB-M-25-21 Model Specific AI Compliance Questions',
     guideTitle: 'OMB-M-25-21 Compliance Guide',
     questTitle: 'OMB-M-25-21 Compliance Questionnaire',
     color: '#4CAF50'
   },
-  [AI_MODULES.EO]: {
+  [AI_MODULES.EO_14179]: {
     title: 'EO 14179',
     description: 'EO 14179 Model Specific AI Compliance Questions',
     guideTitle: 'EO 14179 Compliance Guide',
     questTitle: 'EO 14179 Compliance Questionnaire',
+    color: '#4CAF50'
+  },
+  [AI_MODULES.TITLE13]: {
+    title: 'Title 13',
+    description: 'Title 13 Model Specific AI Compliance Questions',
+    guideTitle: 'Title 13 Compliance Guide',
+    questTitle: 'Title 13 Compliance Questionnaire',
+    color: '#4CAF50'
+  },
+  [AI_MODULES.CIPSEA]: {
+    title: 'CIPSEA',
+    description: 'CIPSEA Model Specific AI Compliance Questions',
+    guideTitle: 'CIPSEA Compliance Guide',
+    questTitle: 'CIPSEA Compliance Questionnaire',
     color: '#4CAF50'
   },
   [AI_MODULES.RISK]: {

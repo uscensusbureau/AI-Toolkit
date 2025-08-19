@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
-import { Info, CheckCircle, AlertTriangle, XCircle, HelpCircle, ChevronDown, BarChart3, FileText, Home, Settings, Download, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Info, CheckCircle, AlertTriangle, XCircle, HelpCircle, ChevronDown, ChevronRight, BarChart3, FileText, Shield, BookOpen, FileKey2, LockIcon, Download, ArrowLeft, ArrowRight } from 'lucide-react';
 
 import AI_MODULES from './data/modules'
 import AI_MODULES_INFO from './data/modules-info'
@@ -158,12 +158,15 @@ function App() {
     [AI_MODULES.MAPPING]: {},
     [AI_MODULES.REGULATION]: {},
     [AI_MODULES.RESPONSIBLE_AI]: {},
-    [AI_MODULES.OMB]: {},
-    [AI_MODULES.EO]: {},
+    [AI_MODULES.OMB_M25_21]: {},
+    [AI_MODULES.EO_14179]: {},
+    [AI_MODULES.CIPSEA]: {},
+    [AI_MODULES.TITLE13]: {},
     [AI_MODULES.RISK]: {}
   });
   const [showResults, setShowResults] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [policyDropdownOpen, setPolicyDropdownOpen] = useState(true);
   const questionsPerPage = 10;
 
   // Load answers from localStorage if available
@@ -275,22 +278,24 @@ function App() {
   };
 
   return (
-    <>
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="bg-white shadow p-4 mb-6">
-          <h1 className="text-center text-2xl font-bold text-gray-800">AI Governance Dashboard</h1>
-          <p className="text-center text-gray-600 mt-2">Comprehensive AI System Assessment & Compliance Tool</p>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white shadow p-4 mb-6">
+        <h1 className="text-center text-2xl font-bold text-gray-800">AI Governance Dashboard</h1>
+        <p className="text-center text-gray-600 mt-2">Comprehensive AI System Assessment & Compliance Tool</p>
+      </div>
 
-        <div className="container mx-auto px-4 pb-8">
-          <div className="flex flex-col md:flex-row gap-4">
-            {/* Sidebar */}
-            <div className="w-full md:w-1/4">
-              <div className="bg-white shadow rounded-lg p-4 h-full">
-                <h2 className="text-xl font-medium mb-4">Modules</h2>
-                <ul className="space-y-2">
-                  {Object.entries(AI_MODULES_INFO).map(([key, value]) => (
+      <div className="container mx-auto px-4 pb-8">
+        <div className="flex flex-col md:flex-row gap-4">
+          {/* Sidebar */}
+          <div className="w-full md:w-1/4">
+            <div className="bg-white shadow rounded-lg p-4 h-full">
+              <h2 className="text-xl font-medium mb-4">Modules</h2>
+              <ul className="space-y-2">
+                {/* Standalone modules */}
+                {[AI_MODULES.MAPPING, AI_MODULES.RESPONSIBLE_AI, AI_MODULES.RISK].map((key) => {
+                  const value = AI_MODULES_INFO[key];
+                  return (
                     <li
                       key={key}
                       onClick={() => handleModuleChange(key)}
@@ -298,430 +303,525 @@ function App() {
                     >
                       <div className="flex items-center">
                         {key === AI_MODULES.MAPPING && <BarChart3 size={20} className="mr-2 text-blue-500" />}
-                        {key === AI_MODULES.REGULATION && <FileText size={20} className="mr-2 text-green-500" />}
                         {key === AI_MODULES.RESPONSIBLE_AI && <CheckCircle size={20} className="mr-2 text-purple-500" />}
-                        {key === AI_MODULES.OMB && <FileText size={20} className="mr-2 text-green-500" />}
-                        {key === AI_MODULES.EO && <FileText size={20} className="mr-2 text-green-500" />}
                         {key === AI_MODULES.RISK && <AlertTriangle size={20} className="mr-2 text-orange-500" />}
                         <span>{value.title}</span>
                       </div>
                     </li>
-                  ))}
-                </ul>
+                  );
+                })}
 
-                <hr className="my-4" />
-
-                <div className="mt-4">
-                  <ModuleProgressComponent AI_MODULES_INFO={AI_MODULES_INFO} answers={answers} QUESTIONNAIRES={QUESTIONNAIRES} />
-                </div>
-
-                <div className="mt-6 bg-blue-50 p-3 rounded-lg">
-                  <div className="flex items-start">
-                    <Info size={20} className="mr-2 text-blue-500 mt-1" />
-                    <p className="text-sm text-gray-700">
-                      Complete all modules for a comprehensive AI governance assessment, or focus on specific areas of interest.
-                    </p>
+                {/* Policy modules dropdown */}
+                <li className="border rounded-lg overflow-hidden">
+                  <div
+                    className={`p-3 cursor-pointer flex items-center justify-between ${
+                      [AI_MODULES.REGULATION, AI_MODULES.OMB_M25_21, AI_MODULES.EO_14179, AI_MODULES.CIPSEA, AI_MODULES.TITLE13].includes(activeModule)
+                        ? 'bg-blue-50' : 'hover:bg-gray-100'
+                    }`}
+                    onClick={() => setPolicyDropdownOpen(!policyDropdownOpen)}
+                  >
+                    <div className="flex items-center">
+                      <FileText size={20} className="mr-2 text-green-600" />
+                      <span className="font-medium">AI Regulations, Policies & Practices</span>
+                    </div>
+                    {policyDropdownOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                   </div>
-                </div>
 
-                {progress.answered > 0 && (
-                  <div className="mt-4">
-                    <button
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded flex items-center justify-center"
-                      onClick={() => setShowResults(true)}
-                    >
-                      <BarChart3 size={16} className="mr-2" />
-                      View Results
-                    </button>
-                  </div>
-                )}
+                  {policyDropdownOpen && (
+                    <div className="bg-gray-50">
+                      {[AI_MODULES.REGULATION, AI_MODULES.OMB_M25_21, AI_MODULES.EO_14179, AI_MODULES.CIPSEA, AI_MODULES.TITLE13].map((key) => {
+                        const value = AI_MODULES_INFO[key];
+                        return (
+                          <div
+                            key={key}
+                            onClick={() => handleModuleChange(key)}
+                            className={`p-3 pl-8 cursor-pointer border-t ${activeModule === key ? 'bg-blue-100' : 'hover:bg-gray-100'}`}
+                          >
+                            <div className="flex items-center">
+                              {key === AI_MODULES.REGULATION && <FileText size={18} className="mr-2 text-green-500" />}
+                              {key === AI_MODULES.OMB_M25_21 && <Shield size={18} className="mr-2 text-pink-500" />}
+                              {key === AI_MODULES.EO_14179 && <BookOpen size={18} className="mr-2 text-blue-700" />}
+                              {key === AI_MODULES.CIPSEA && <LockIcon size={18} className="mr-2 text-amber-500" />}
+                              {key === AI_MODULES.TITLE13 && <FileKey2 size={18} className="mr-2 text-purple-700" />}
+                              <span className="text-sm">{value.title}</span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </li>
+              </ul>
+
+              <hr className="my-4" />
+
+              <div className="mt-4">
+                <h3 className="font-medium mb-2">Module Progress</h3>
+
+                {/* Standalone modules progress */}
+                {[AI_MODULES.MAPPING, AI_MODULES.RESPONSIBLE_AI, AI_MODULES.RISK].map((key) => {
+                  const value = AI_MODULES_INFO[key];
+                  const moduleAnswers = answers[key];
+                  const questionsAnswered = Object.keys(moduleAnswers).length;
+                  const totalQuestions = QUESTIONNAIRES[key].length;
+                  const progressPercentage = Math.round((questionsAnswered / totalQuestions) * 100);
+
+                  return (
+                    <div key={key} className="mb-3">
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-xs">{value.title}</span>
+                        <span className="text-xs">{questionsAnswered}/{totalQuestions}</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className="h-2 rounded-full"
+                          style={{
+                            width: `${progressPercentage}%`,
+                            backgroundColor: value.color
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {/* Policy modules progress */}
+                <div className="mt-4 pt-3 border-t border-gray-200">
+                  <h4 className="text-sm font-medium text-gray-600 mb-2">AI Regulations, Policies & Practices</h4>
+                  {[AI_MODULES.REGULATION, AI_MODULES.OMB_M25_21, AI_MODULES.EO_14179, AI_MODULES.CIPSEA, AI_MODULES.TITLE13].map((key) => {
+                    const value = AI_MODULES_INFO[key];
+                    const moduleAnswers = answers[key];
+                    const questionsAnswered = Object.keys(moduleAnswers).length;
+                    const totalQuestions = QUESTIONNAIRES[key].length;
+                    const progressPercentage = Math.round((questionsAnswered / totalQuestions) * 100);
+
+                    return (
+                      <div key={key} className="mb-3">
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="text-xs">{value.title}</span>
+                          <span className="text-xs">{questionsAnswered}/{totalQuestions}</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className="h-2 rounded-full"
+                            style={{
+                              width: `${progressPercentage}%`,
+                              backgroundColor: value.color
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
 
-            {/* Main Content */}
-            <div className="w-full md:w-3/4">
-              <div className="bg-white shadow rounded-lg mb-4">
-                <div className="border-b p-4 flex justify-between items-center">
-                  <h2 className="text-xl font-medium">{AI_MODULES_INFO[activeModule].title}</h2>
-                  <div>
-                    <button
-                      className={`mr-2 ${moduleView === 'questionnaire' ? 'bg-blue-600 text-white' : 'bg-gray-200'} px-3 py-1 rounded`}
-                      onClick={() => setModuleView('questionnaire')}
-                    >
-                      Questionnaire
-                    </button>
-                    <button
-                      className={`${moduleView === 'guide' ? 'bg-blue-600 text-white' : 'bg-gray-200'} px-3 py-1 rounded`}
-                      onClick={() => setModuleView('guide')}
-                    >
-                      Information Guide
-                    </button>
-                  </div>
-                </div>
-
-                <div className="p-4 bg-blue-50 mb-4 flex items-start">
-                  <HelpCircle size={20} className="mr-2 text-blue-500 mt-1" />
-                  <p className="text-sm">
-                    {AI_MODULES_INFO[activeModule].description}
+              <div className="mt-6 bg-blue-50 p-3 rounded-lg">
+                <div className="flex items-start">
+                  <Info size={20} className="mr-2 text-blue-500 mt-1" />
+                  <p className="text-sm text-gray-700">
+                    Complete all modules for a comprehensive AI governance assessment, or focus on specific areas of interest.
                   </p>
                 </div>
-
-                {moduleView === 'questionnaire' ? (
-                  <div className="p-4">
-                    <h3 className="text-lg mb-4">{AI_MODULES_INFO[activeModule].questTitle}</h3>
-
-                    {!showResults ? (
-                      <>
-                        <div className="mb-4 bg-gray-100 p-3 rounded-lg">
-                          <div className="flex justify-between mb-1">
-                            <span className="text-sm font-medium">Questionnaire Progress</span>
-                            <span className="text-sm">{progress.answered} of {progress.total} questions answered ({progress.percentage}%)</span>
-                          </div>
-                          <div className="w-full bg-gray-300 rounded-full h-2.5">
-                            <div
-                              className="h-2.5 rounded-full bg-blue-600"
-                              style={{ width: `${progress.percentage}%` }}
-                            ></div>
-                          </div>
-                          <div className="mt-2 text-sm text-gray-600">
-                            Page {currentPage + 1} of {totalPages}
-                          </div>
-                        </div>
-
-                        {currentQuestions.map((q, index) => {
-                          const absoluteIndex = currentPage * questionsPerPage + index;
-                          return (
-                            <div key={absoluteIndex} className="mb-4 border rounded-lg overflow-hidden">
-                              <div className="bg-gray-100 p-4">
-                                <h4 className="font-medium text-gray-800">
-                                  {absoluteIndex + 1}. {q.question}
-                                </h4>
-                                <p className="text-sm text-gray-500">
-                                  Category: {q.category}
-                                </p>
-                              </div>
-                              <div className="p-4">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                  {q.options.map((option, optIndex) => (
-                                    <button
-                                      key={optIndex}
-                                      className={`p-2 border rounded w-full ${answers[activeModule][absoluteIndex] === option ? 'bg-blue-600 text-white' : 'border-gray-300'}`}
-                                      onClick={() => handleAnswer(absoluteIndex, option)}
-                                    >
-                                      {option}
-                                    </button>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-
-                        <div className="mt-6 flex justify-between">
-                          <button
-                            className={`flex items-center ${currentPage === 0 ? 'bg-gray-200 cursor-not-allowed' : 'bg-gray-300 hover:bg-gray-400'} text-gray-800 px-4 py-2 rounded`}
-                            onClick={prevPage}
-                            disabled={currentPage === 0}
-                          >
-                            <ArrowLeft size={16} className="mr-2" />
-                            Previous Page
-                          </button>
-
-                          <div className="flex space-x-2">
-                            <button
-                              className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
-                              onClick={resetQuestionnaire}
-                            >
-                              Reset
-                            </button>
-                            <button
-                              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-                              onClick={submitQuestionnaire}
-                            >
-                              View Results
-                            </button>
-                          </div>
-
-                          <button
-                            className={`flex items-center ${currentPage >= totalPages - 1 ? 'bg-gray-200 cursor-not-allowed' : 'bg-gray-300 hover:bg-gray-400'} text-gray-800 px-4 py-2 rounded`}
-                            onClick={nextPage}
-                            disabled={currentPage >= totalPages - 1}
-                          >
-                            Next Page
-                            <ArrowRight size={16} className="ml-2" />
-                          </button>
-                        </div>
-                      </>
-                    ) : (
-                      // Results view
-                      <div>
-                        <div className="mb-6 border rounded-lg overflow-hidden">
-                          <div className="bg-blue-50 p-4 border-b">
-                            <h3 className="text-xl font-bold">Assessment Results</h3>
-                          </div>
-                          <div className="p-4">
-                            <div className="mb-4">
-                              <h4 className="text-lg font-medium mb-2">Overall Compliance Score</h4>
-                              <div className="flex items-center mb-2">
-                                <div className="flex-grow">
-                                  <div className="w-full bg-gray-200 rounded-full h-2.5">
-                                    <div
-                                      className="h-2.5 rounded-full"
-                                      style={{
-                                        width: `${moduleScore.percentage}%`,
-                                        backgroundColor: complianceLevel.color
-                                      }}
-                                    ></div>
-                                  </div>
-                                </div>
-                                <span className="ml-4 font-bold">
-                                  {moduleScore.percentage}%
-                                </span>
-                              </div>
-                              <div className="flex items-center">
-                                <span className="mr-2" style={{ color: complianceLevel.color }}>
-                                  {complianceLevel.icon}
-                                </span>
-                                <span style={{ color: complianceLevel.color }}>
-                                  {complianceLevel.level}
-                                </span>
-                              </div>
-                              <div className="mt-2 text-sm text-gray-600">
-                                Questions Answered: {progress.answered} of {progress.total} ({progress.percentage}%)
-                              </div>
-                            </div>
-
-                            {activeModule !== AI_MODULES.MAPPING && (
-                              <div className="mt-8">
-                                <h4 className="text-lg font-medium mb-4">Category Breakdown</h4>
-                                <div className="h-64">
-                                  <ResponsiveContainer width="100%" height="100%">
-                                    {activeModule === AI_MODULES.RESPONSIBLE_AI ? (
-                                      <RadarChart outerRadius={90} data={categoryScores}>
-                                        <PolarGrid />
-                                        <PolarAngleAxis dataKey="category" />
-                                        <PolarRadiusAxis domain={[0, 100]} />
-                                        <Radar name="Score" dataKey="percentage" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-                                        <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
-                                      </RadarChart>
-                                    ) : (
-                                      <BarChart data={categoryScores}>
-                                        <CartesianGrid strokeDasharray="3 3" />
-                                        <XAxis dataKey="category" />
-                                        <YAxis domain={[0, 100]} />
-                                        <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
-                                        <Legend />
-                                        <Bar dataKey="percentage" name="Compliance Score" fill="#8884d8" />
-                                      </BarChart>
-                                    )}
-                                  </ResponsiveContainer>
-                                </div>
-                              </div>
-                            )}
-
-                            {activeModule === AI_MODULES.MAPPING && modelRecommendation && (
-                              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                                <h4 className="text-lg font-bold mb-2">Recommended AI Mapping Model Options</h4>
-                                <ul className="space-y-4">
-                                  {modelRecommendation.recommendations.map((rec, index) => (
-                                    <li key={index} className="flex items-start ml-2">
-                                      <CheckCircle className="text-green-500 mt-0.5 mr-2 flex-shrink-0" size={18} />
-                                      <p className="font-medium">{rec}</p>
-                                    </li>
-                                  ))}
-                                </ul>
-                                {modelRecommendation.libraries && (
-                                  <div className="mt-4 pt-4 border-t border-blue-200">
-                                    <p className="text-sm font-medium text-gray-700 mb-1">Recommended Libraries/Implementations:</p>
-                                    <p className="text-sm font-mono bg-blue-100 p-2 rounded">{modelRecommendation.libraries}</p>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-
-                            <div className="mt-8">
-                              <h4 className="text-lg font-medium mb-2">Areas for Improvement</h4>
-                              <ul className="space-y-2">
-                                {categoryScores
-                                  .filter(cat => cat.percentage < 70)
-                                  .map((cat, index) => (
-                                    <li key={index} className="rounded bg-gray-50 p-4">
-                                      <p className="font-medium">{cat.category}</p>
-                                      <p className="text-sm text-gray-600">
-                                        Current score: {cat.percentage}% - {cat.answeredQuestions}/{cat.questions} questions answered
-                                      </p>
-                                    </li>
-                                  ))}
-                                {categoryScores.filter(cat => cat.percentage < 70).length === 0 && (
-                                  <p className="text-green-600 italic">
-                                    All categories show good compliance levels!
-                                  </p>
-                                )}
-                              </ul>
-                            </div>
-
-                            <div className="mt-8">
-                              <h4 className="text-lg font-medium mb-2">Recommendations</h4>
-                              <div className="bg-gray-50 p-4 rounded">
-                                <p>{getRecommendations(categoryScores, activeModule)}</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex justify-between">
-                          <button
-                            className="flex items-center mt-4 bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded"
-                            onClick={() => setShowResults(false)}
-                          >
-                            <ArrowLeft size={16} className="mr-2" />
-                            Return to Questionnaire
-                          </button>
-
-                          <button
-                            className="flex items-center mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-                            onClick={downloadResults}
-                          >
-                            <Download size={16} className="mr-2" />
-                            Export Results
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  // Guide view
-                  <div className="p-4">
-                    <h3 className="text-lg mb-4">{AI_MODULES_INFO[activeModule].guideTitle}</h3>
-
-                    {GUIDE_CONTENT[activeModule].map((section, index) => (
-                      <div key={index} className="mb-4 border rounded-lg overflow-hidden">
-                        <div
-                          className="bg-gray-100 p-4 flex justify-between items-center cursor-pointer"
-                          onClick={() => {
-                            const element = document.getElementById(`section-${index}`);
-                            if (element) {
-                              element.style.display = element.style.display === 'none' ? 'block' : 'none';
-                            }
-                          }}
-                        >
-                          <h4 className="font-medium">{section.title}</h4>
-                          <ChevronDown />
-                        </div>
-                        <div id={`section-${index}`} className="p-4">
-                          <ul className="space-y-2">
-                            {section.items.map((item, itemIndex) => (
-                              <li key={itemIndex} className="flex py-2">
-                                <span className="mr-2 text-blue-500">•</span>
-                                <span>{item}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    ))}
-
-                    {activeModule === AI_MODULES.RESPONSIBLE_AI && (
-                      <div className="mt-6">
-                        <h4 className="text-lg font-medium mb-4">Responsible AI Principles Framework</h4>
-                        <div className="h-64">
-                          <ResponsiveContainer width="100%" height="100%">
-                            <RadarChart
-                              outerRadius={90}
-                              data={[
-                                { area: "Bias & Fairness", fullMark: 100, value: 100 },
-                                { area: "Privacy & Security", fullMark: 100, value: 100 },
-                                { area: "Transparency", fullMark: 100, value: 100 },
-                                { area: "Accountability", fullMark: 100, value: 100 },
-                                { area: "Robustness", fullMark: 100, value: 100 }
-                              ]}
-                            >
-                              <PolarGrid />
-                              <PolarAngleAxis dataKey="area" />
-                              <PolarRadiusAxis domain={[0, 100]} />
-                              <Radar name="Framework" dataKey="value" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-                            </RadarChart>
-                          </ResponsiveContainer>
-                        </div>
-                      </div>
-                    )}
-
-                    {activeModule === AI_MODULES.RISK && (
-                      <div className="mt-6">
-                        <h4 className="text-lg font-medium mb-4">NIST AI RMF Core Functions</h4>
-                        <div className="flex flex-wrap justify-center">
-                          {["Map", "Measure", "Manage", "Govern"].map((func, idx) => (
-                            <div key={idx} className="m-2 p-4 w-40 h-40 rounded-full flex flex-col items-center justify-center text-center bg-blue-100 border-2 border-blue-500">
-                              <span className="font-bold text-blue-800">{func}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {activeModule === AI_MODULES.MAPPING && (
-                      <div className="mt-6">
-                        <h4 className="text-lg font-medium mb-4">Model Selection Framework</h4>
-                        <div className="relative w-full h-64 border rounded-lg overflow-hidden">
-                          <div className="absolute left-0 top-0 w-1/2 h-1/2 bg-blue-100 border-r border-b p-4">
-                            <p className="font-bold">Data Modality</p>
-                            <p className="text-sm">Structured vs. Unstructured</p>
-                          </div>
-                          <div className="absolute right-0 top-0 w-1/2 h-1/2 bg-green-100 border-l border-b p-4">
-                            <p className="font-bold">Task Type</p>
-                            <p className="text-sm">Classification, Regression, etc.</p>
-                          </div>
-                          <div className="absolute left-0 bottom-0 w-1/2 h-1/2 bg-yellow-100 border-r border-t p-4">
-                            <p className="font-bold">Learning Paradigm</p>
-                            <p className="text-sm">Supervised, Unsupervised, etc.</p>
-                          </div>
-                          <div className="absolute right-0 bottom-0 w-1/2 h-1/2 bg-purple-100 border-l border-t p-4">
-                            <p className="font-bold">Constraints</p>
-                            <p className="text-sm">Resources, Interpretability, etc.</p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {activeModule === AI_MODULES.REGULATION && (
-                      <div className="mt-6">
-                        <h4 className="text-lg font-medium mb-4">Federal AI Policy Pillars</h4>
-                        <div className="h-64">
-                          <ResponsiveContainer width="100%" height="100%">
-                            <BarChart
-                              data={[
-                                { name: "Governance", value: 100 },
-                                { name: "Transparency", value: 100 },
-                                { name: "Accountability", value: 100 },
-                                { name: "Privacy", value: 100 },
-                                { name: "Security", value: 100 },
-                                { name: "Fairness", value: 100 }
-                              ]}
-                            >
-                              <CartesianGrid strokeDasharray="3 3" />
-                              <XAxis dataKey="name" />
-                              <YAxis domain={[0, 100]} />
-                              <Tooltip />
-                              <Bar dataKey="value" fill="#8884d8" />
-                            </BarChart>
-                          </ResponsiveContainer>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
               </div>
+
+              {progress.answered > 0 && (
+                <div className="mt-4">
+                  <button
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded flex items-center justify-center"
+                    onClick={() => setShowResults(true)}
+                  >
+                    <BarChart3 size={16} className="mr-2" />
+                    View Results
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="w-full md:w-3/4">
+            <div className="bg-white shadow rounded-lg mb-4">
+              <div className="border-b p-4 flex justify-between items-center">
+                <h2 className="text-xl font-medium">{AI_MODULES_INFO[activeModule].title}</h2>
+                <div>
+                  <button
+                    className={`mr-2 ${moduleView === 'questionnaire' ? 'bg-blue-600 text-white' : 'bg-gray-200'} px-3 py-1 rounded`}
+                    onClick={() => setModuleView('questionnaire')}
+                  >
+                    Questionnaire
+                  </button>
+                  <button
+                    className={`${moduleView === 'guide' ? 'bg-blue-600 text-white' : 'bg-gray-200'} px-3 py-1 rounded`}
+                    onClick={() => setModuleView('guide')}
+                  >
+                    Information Guide
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-4 bg-blue-50 mb-4 flex items-start">
+                <HelpCircle size={20} className="mr-2 text-blue-500 mt-1" />
+                <p className="text-sm">
+                  {AI_MODULES_INFO[activeModule].description}
+                </p>
+              </div>
+
+              {moduleView === 'questionnaire' ? (
+                <div className="p-4">
+                  <h3 className="text-lg mb-4">{AI_MODULES_INFO[activeModule].questTitle}</h3>
+
+                  {!showResults ? (
+                    <>
+                      <div className="mb-4 bg-gray-100 p-3 rounded-lg">
+                        <div className="flex justify-between mb-1">
+                          <span className="text-sm font-medium">Questionnaire Progress</span>
+                          <span className="text-sm">{progress.answered} of {progress.total} questions answered ({progress.percentage}%)</span>
+                        </div>
+                        <div className="w-full bg-gray-300 rounded-full h-2.5">
+                          <div
+                            className="h-2.5 rounded-full bg-blue-600"
+                            style={{ width: `${progress.percentage}%` }}
+                          ></div>
+                        </div>
+                        <div className="mt-2 text-sm text-gray-600">
+                          Page {currentPage + 1} of {totalPages}
+                        </div>
+                      </div>
+
+                      {currentQuestions.map((q, index) => {
+                        const absoluteIndex = currentPage * questionsPerPage + index;
+                        return (
+                          <div key={absoluteIndex} className="mb-4 border rounded-lg overflow-hidden">
+                            <div className="bg-gray-100 p-4">
+                              <h4 className="font-medium text-gray-800">
+                                {absoluteIndex + 1}. {q.question}
+                              </h4>
+                              <p className="text-sm text-gray-500">
+                                Category: {q.category}
+                              </p>
+                            </div>
+                            <div className="p-4">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                {q.options.map((option, optIndex) => (
+                                  <button
+                                    key={optIndex}
+                                    className={`p-2 border rounded w-full ${answers[activeModule][absoluteIndex] === option ? 'bg-blue-600 text-white' : 'border-gray-300'}`}
+                                    onClick={() => handleAnswer(absoluteIndex, option)}
+                                  >
+                                    {option}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      <div className="mt-6 flex justify-between">
+                        <button
+                          className={`flex items-center ${currentPage === 0 ? 'bg-gray-200 cursor-not-allowed' : 'bg-gray-300 hover:bg-gray-400'} text-gray-800 px-4 py-2 rounded`}
+                          onClick={prevPage}
+                          disabled={currentPage === 0}
+                        >
+                          <ArrowLeft size={16} className="mr-2" />
+                          Previous Page
+                        </button>
+
+                        <div className="flex space-x-2">
+                          <button
+                            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
+                            onClick={resetQuestionnaire}
+                          >
+                            Reset
+                          </button>
+                          <button
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                            onClick={submitQuestionnaire}
+                          >
+                            View Results
+                          </button>
+                        </div>
+
+                        <button
+                          className={`flex items-center ${currentPage >= totalPages - 1 ? 'bg-gray-200 cursor-not-allowed' : 'bg-gray-300 hover:bg-gray-400'} text-gray-800 px-4 py-2 rounded`}
+                          onClick={nextPage}
+                          disabled={currentPage >= totalPages - 1}
+                        >
+                          Next Page
+                          <ArrowRight size={16} className="ml-2" />
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    // Results view
+                    <div>
+                      <div className="mb-6 border rounded-lg overflow-hidden">
+                        <div className="bg-blue-50 p-4 border-b">
+                          <h3 className="text-xl font-bold">Assessment Results</h3>
+                        </div>
+                        <div className="p-4">
+                          <div className="mb-4">
+                            <h4 className="text-lg font-medium mb-2">Overall Compliance Score</h4>
+                            <div className="flex items-center mb-2">
+                              <div className="flex-grow">
+                                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                                  <div
+                                    className="h-2.5 rounded-full"
+                                    style={{
+                                      width: `${moduleScore.percentage}%`,
+                                      backgroundColor: complianceLevel.color
+                                    }}
+                                  ></div>
+                                </div>
+                              </div>
+                              <span className="ml-4 font-bold">
+                                {moduleScore.percentage}%
+                              </span>
+                            </div>
+                            <div className="flex items-center">
+                              <span className="mr-2" style={{ color: complianceLevel.color }}>
+                                {complianceLevel.icon}
+                              </span>
+                              <span style={{ color: complianceLevel.color }}>
+                                {complianceLevel.level}
+                              </span>
+                            </div>
+                            <div className="mt-2 text-sm text-gray-600">
+                              Questions Answered: {progress.answered} of {progress.total} ({progress.percentage}%)
+                            </div>
+                          </div>
+
+                          {activeModule !== AI_MODULES.MAPPING && (
+                            <div className="mt-8">
+                              <h4 className="text-lg font-medium mb-4">Category Breakdown</h4>
+                              <div className="h-64">
+                                <ResponsiveContainer width="100%" height="100%">
+                                  {activeModule === AI_MODULES.RESPONSIBLE_AI ? (
+                                    <RadarChart outerRadius={90} data={categoryScores}>
+                                      <PolarGrid />
+                                      <PolarAngleAxis dataKey="category" />
+                                      <PolarRadiusAxis domain={[0, 100]} />
+                                      <Radar name="Score" dataKey="percentage" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                                      <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
+                                    </RadarChart>
+                                  ) : (
+                                    <BarChart data={categoryScores}>
+                                      <CartesianGrid strokeDasharray="3 3" />
+                                      <XAxis dataKey="category" />
+                                      <YAxis domain={[0, 100]} />
+                                      <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
+                                      <Legend />
+                                      <Bar dataKey="percentage" name="Compliance Score" fill="#8884d8" />
+                                    </BarChart>
+                                  )}
+                                </ResponsiveContainer>
+                              </div>
+                            </div>
+                          )}
+
+                          {activeModule === AI_MODULES.MAPPING && modelRecommendation && (
+                            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                              <h4 className="text-lg font-bold mb-2">Recommended AI Mapping Model Options</h4>
+                              <ul className="space-y-4">
+                                {modelRecommendation.recommendations.map((rec, index) => (
+                                  <li key={index} className="flex items-start ml-2">
+                                    <CheckCircle className="text-green-500 mt-0.5 mr-2 flex-shrink-0" size={18} />
+                                    <p className="font-medium">{rec}</p>
+                                  </li>
+                                ))}
+                              </ul>
+                              {modelRecommendation.libraries && (
+                                <div className="mt-4 pt-4 border-t border-blue-200">
+                                  <p className="text-sm font-medium text-gray-700 mb-1">Recommended Libraries/Implementations:</p>
+                                  <p className="text-sm font-mono bg-blue-100 p-2 rounded">{modelRecommendation.libraries}</p>
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          <div className="mt-8">
+                            <h4 className="text-lg font-medium mb-2">Areas for Improvement</h4>
+                            <ul className="space-y-2">
+                              {categoryScores
+                                .filter(cat => cat.percentage < 70)
+                                .map((cat, index) => (
+                                  <li key={index} className="rounded bg-gray-50 p-4">
+                                    <p className="font-medium">{cat.category}</p>
+                                    <p className="text-sm text-gray-600">
+                                      Current score: {cat.percentage}% - {cat.answeredQuestions}/{cat.questions} questions answered
+                                    </p>
+                                  </li>
+                                ))}
+                              {categoryScores.filter(cat => cat.percentage < 70).length === 0 && (
+                                <p className="text-green-600 italic">
+                                  All categories show good compliance levels!
+                                </p>
+                              )}
+                            </ul>
+                          </div>
+
+                          <div className="mt-8">
+                            <h4 className="text-lg font-medium mb-2">Recommendations</h4>
+                            <div className="bg-gray-50 p-4 rounded">
+                              <p>{getRecommendations(categoryScores, activeModule)}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <button
+                          className="flex items-center mt-4 bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded"
+                          onClick={() => setShowResults(false)}
+                        >
+                          <ArrowLeft size={16} className="mr-2" />
+                          Return to Questionnaire
+                        </button>
+
+                        <button
+                          className="flex items-center mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                          onClick={downloadResults}
+                        >
+                          <Download size={16} className="mr-2" />
+                          Export Results
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                // Guide view
+                <div className="p-4">
+                  <h3 className="text-lg mb-4">{AI_MODULES_INFO[activeModule].guideTitle}</h3>
+
+                  {GUIDE_CONTENT[activeModule].map((section, index) => (
+                    <div key={index} className="mb-4 border rounded-lg overflow-hidden">
+                      <div
+                        className="bg-gray-100 p-4 flex justify-between items-center cursor-pointer"
+                        onClick={() => {
+                          const element = document.getElementById(`section-${index}`);
+                          if (element) {
+                            element.style.display = element.style.display === 'none' ? 'block' : 'none';
+                          }
+                        }}
+                      >
+                        <h4 className="font-medium">{section.title}</h4>
+                        <ChevronDown />
+                      </div>
+                      <div id={`section-${index}`} className="p-4">
+                        <ul className="space-y-2">
+                          {section.items.map((item, itemIndex) => (
+                            <li key={itemIndex} className="flex py-2">
+                              <span className="mr-2 text-blue-500">•</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  ))}
+
+                  {activeModule === AI_MODULES.RESPONSIBLE_AI && (
+                    <div className="mt-6">
+                      <h4 className="text-lg font-medium mb-4">Responsible AI Principles Framework</h4>
+                      <div className="h-64">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <RadarChart
+                            outerRadius={90}
+                            data={[
+                              { area: "Bias & Fairness", fullMark: 100, value: 100 },
+                              { area: "Privacy & Security", fullMark: 100, value: 100 },
+                              { area: "Transparency", fullMark: 100, value: 100 },
+                              { area: "Accountability", fullMark: 100, value: 100 },
+                              { area: "Robustness", fullMark: 100, value: 100 }
+                            ]}
+                          >
+                            <PolarGrid />
+                            <PolarAngleAxis dataKey="area" />
+                            <PolarRadiusAxis domain={[0, 100]} />
+                            <Radar name="Framework" dataKey="value" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                          </RadarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeModule === AI_MODULES.RISK && (
+                    <div className="mt-6">
+                      <h4 className="text-lg font-medium mb-4">NIST AI RMF Core Functions</h4>
+                      <div className="flex flex-wrap justify-center">
+                        {["Map", "Measure", "Manage", "Govern"].map((func, idx) => (
+                          <div key={idx} className="m-2 p-4 w-40 h-40 rounded-full flex flex-col items-center justify-center text-center bg-blue-100 border-2 border-blue-500">
+                            <span className="font-bold text-blue-800">{func}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {activeModule === AI_MODULES.MAPPING && (
+                    <div className="mt-6">
+                      <h4 className="text-lg font-medium mb-4">Model Selection Framework</h4>
+                      <div className="relative w-full h-64 border rounded-lg overflow-hidden">
+                        <div className="absolute left-0 top-0 w-1/2 h-1/2 bg-blue-100 border-r border-b p-4">
+                          <p className="font-bold">Data Modality</p>
+                          <p className="text-sm">Structured vs. Unstructured</p>
+                        </div>
+                        <div className="absolute right-0 top-0 w-1/2 h-1/2 bg-green-100 border-l border-b p-4">
+                          <p className="font-bold">Task Type</p>
+                          <p className="text-sm">Classification, Regression, etc.</p>
+                        </div>
+                        <div className="absolute left-0 bottom-0 w-1/2 h-1/2 bg-yellow-100 border-r border-t p-4">
+                          <p className="font-bold">Learning Paradigm</p>
+                          <p className="text-sm">Supervised, Unsupervised, etc.</p>
+                        </div>
+                        <div className="absolute right-0 bottom-0 w-1/2 h-1/2 bg-purple-100 border-l border-t p-4">
+                          <p className="font-bold">Constraints</p>
+                          <p className="text-sm">Resources, Interpretability, etc.</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeModule === AI_MODULES.REGULATION && (
+                    <div className="mt-6">
+                      <h4 className="text-lg font-medium mb-4">Federal AI Policy Pillars</h4>
+                      <div className="h-64">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <BarChart
+                            data={[
+                              { name: "Governance", value: 100 },
+                              { name: "Transparency", value: 100 },
+                              { name: "Accountability", value: 100 },
+                              { name: "Privacy", value: 100 },
+                              { name: "Security", value: 100 },
+                              { name: "Fairness", value: 100 }
+                            ]}
+                          >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis domain={[0, 100]} />
+                            <Tooltip />
+                            <Bar dataKey="value" fill="#8884d8" />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
-
-        {/* Footer */}
-        <footer className="bg-gray-800 text-white p-4 text-center">
-          <p>AI Governance Dashboard © 2025 - Last updated: May 7, 2025</p>
-        </footer>
       </div>
-    </>
-  )
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white p-4 text-center">
+        <p>AI Governance Dashboard © 2025 - Last updated: May 7, 2025</p>
+      </footer>
+    </div>
+  );
 }
 
 export default App

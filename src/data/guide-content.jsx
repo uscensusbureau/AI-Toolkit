@@ -206,7 +206,7 @@ const GUIDE_CONTENT = {
         'Transparency Practices: Share relevant risk insights with internal and external stakeholders through appropriate channels. Determine what information should be shared with different stakeholder groups—from technical details for regulators to accessible summaries for affected communities. For public-facing systems, publish appropriate documentation about system purpose, capabilities, limitations, and governance. For internal systems, ensure decision-makers understand key risk factors and controls.'
       ]
     }
-  ]
+  ],
 }
 
 export default GUIDE_CONTENT
