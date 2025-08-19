@@ -1,7 +1,7 @@
 import AI_MODULES from '../modules'
 
 const QUESTIONS_EO = {
-  [AI_MODULES.EO]: [
+  [AI_MODULES.EO_14179]: [
     {
       question: "Does this AI system include documentation showing it was developed free from ideological bias or engineered social agendas?",
       options: ["Yes, documentation and tests completed", "Reviewed by policy team, limited testing done", "Pending additional analysis", "No explicit check"],
@@ -21,13 +21,13 @@ const QUESTIONS_EO = {
       weight: 1
     },
     {
-      question: "Does this model\’s documentation comply with revisions to OMB M-24-10 and related documents as required by EO 14179?",
+      question: "Does this model's documentation comply with revisions to OMB M-24-10 and related documents as required by EO 14179?",
       options: ["Complies with updated guidance", "Aligns with older memos, reviewing new standards", "In transition", "Not updated yet"],
       category: "Policy Compliance & Regulatory Efficiency",
       weight: 1
     },
     {
-      question: "Has this system\’s risk classification (or waiver) been reviewed under new OMB guidance?",
+      question: "Has this system's risk classification (or waiver) been reviewed under new OMB guidance?",
       options: ["Classification updated", "Initial classification done, waiver unclear", "Will reassess", "No reclassification yet"],
       category: "Policy Compliance & Regulatory Efficiency",
       weight: 1
@@ -41,7 +41,7 @@ const QUESTIONS_EO = {
     {
       question: "Is there evidence that safety and trustworthiness assessments did not impose ideological or extraneous constraints?",
       options: ["Tests conducted without social engineering aims", "General fairness tests, unclear alignment", "Under review", "Not documented"],
-      category: "Strategic Alignment & National Competitiveness",
+      category: "Ideological Bias Prevention & Technical Integrity",
       weight: 1
     },
     {

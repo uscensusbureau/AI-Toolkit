@@ -1,10 +1,10 @@
 import AI_MODULES from '../modules'
 
 const QUESTIONS_OMB = {
-  [AI_MODULES.OMB]: [
+  [AI_MODULES.OMB_M25_21]: [
     {
       question: "Is this AI system documented with a clear description of its intended use, objectives, and expected outcomes?",
-      options: ["Yes", "No", "In-progress", "Not Applicable"],
+      options: ["Yes", "No", "In-Progress", "Not Applicable"],
       category: "Documentation & Assessment Requirements",
       weight: 1
     },
@@ -51,6 +51,12 @@ const QUESTIONS_OMB = {
       weight: 1
     },
     {
+      question: "Does the AIIA include potential impacts on privacy, civil rights, or civil liberties?",
+      options: ["Yes, included in the assessment", "Not included in the assessment", "Partially included in the assessment", "Not Applicable"],
+      category: "AI Impact Assessment (AIIA) Components",
+      weight: 1
+    },
+    {
       question: "Does the AIIA include expected costs and benefits to the public?",
       options: ["Yes, included in the assessment", "Not included in the assessment", "Partially included in the assessment", "Not Applicable"],
       category: "AI Impact Assessment (AIIA) Components",
@@ -82,13 +88,13 @@ const QUESTIONS_OMB = {
     },
     {
       question: "Is there a documented process by which individuals can appeal or seek redress if affected by decisions from this AI system?",
-      options: ["Yes, formal appeals/redress process", "No documented process", "Process under-developement", "Not Applicable"],
+      options: ["Yes, formal appeals/redress process", "No documented process", "Process under-development", "Not Applicable"],
       category: "Human Oversight & Safety Mechanisms",
       weight: 1
     },
     {
       question: "Are there documented procedures for ongoing monitoring to detect unintended consequences after deployment?",
-      options: ["Yes, continuous monitoring process", "No documented process", "Periodic manual review", "Not Applicable"],
+      options: ["Yes, continuous monitoring process", "No monitoring documented", "Periodic manual review", "Not Applicable"],
       category: "Monitoring & Accountability Framework",
       weight: 1
     },
@@ -106,7 +112,7 @@ const QUESTIONS_OMB = {
     },
     {
       question: "Has the AIIA (or summary) for this system been published or made available on an agency website?",
-      options: ["Yes, published in the public domain", "Not published", "Limited only to internal stakeholders", "Not Applicable"],
+      options: ["Yes, published in the public domain", "Not published", "Shared only to internal stakeholders", "Not Applicable"],
       category: "Public Transparency & Disclosure",
       weight: 1
     },
