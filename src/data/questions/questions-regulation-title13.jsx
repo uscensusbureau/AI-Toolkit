@@ -1,6 +1,6 @@
 import AI_MODULES from '../modules'
 
-const QUESTIONS_TITLE13 = {
+const QUESTIONS_TITLE_13 = {
   [AI_MODULES.TITLE_13]: [
     {
       question: "Was the data used in the AI system collected under Title 13 authority?",
@@ -125,4 +125,4 @@ const QUESTIONS_TITLE13 = {
   ]
 };
 
-export default QUESTIONS_TITLE13
+export default QUESTIONS_TITLE_13
