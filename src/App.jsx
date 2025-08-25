@@ -149,7 +149,8 @@ const getRecommendations = (categoryScores, module) => {
     [AI_MODULES.MAPPING]: `Consider reviewing your selections related to ${categoriesList}. A more appropriate model architecture or approach may better address your specific needs in these areas.`,
     [AI_MODULES.REGULATION]: `To enhance regulatory compliance, prioritize improvements in ${categoriesList}. Consider implementing a more formal governance structure with clear documentation and review processes for these aspects.`,
     [AI_MODULES.RESPONSIBLE_AI]: `To strengthen responsible AI practices, focus on improvements in ${categoriesList}. Implementing regular audits and creating more robust processes in these areas will enhance your overall responsible AI framework.`,
-    [AI_MODULES.RISK]: `For better risk management, strengthen your approach to ${categoriesList}. Establish clearer ownership of risks in these categories and implement regular review cycles to address emerging concerns.`
+    [AI_MODULES.RISK]: `For better risk management, strengthen your approach to ${categoriesList}. Establish clearer ownership of risks in these categories and implement regular review cycles to address emerging concerns.`,
+    [AI_MODULES.TITLE_13]: `To improve Title 13 compliance, focus on strengthening ${categoriesList}. Implement additional safeguards and documentation in these areas to ensure proper protection of statistical data and compliance with confidentiality requirements.`
   };
 
   return moduleRecommendations[module] || "Focus on the lowest-scoring categories to improve your overall assessment.";
@@ -548,7 +549,8 @@ const LandingPage = ({ onLaunchDashboard }) => {
                       key === AI_MODULES.RESPONSIBLE_AI ? 'bg-gradient-to-br from-purple-400 to-purple-600' :
                       key === AI_MODULES.RISK ? 'bg-gradient-to-br from-orange-400 to-orange-600' :
                       key === AI_MODULES.OMB_M25_21 ? 'bg-gradient-to-br from-pink-400 to-pink-600' :
-                      'bg-gradient-to-br from-amber-400 to-amber-600'
+                      key === AI_MODULES.EO_14179 ? 'bg-gradient-to-br from-amber-400 to-amber-600' :
+                      'bg-gradient-to-br from-blue-700 to-blue-800'
                     }`}>
                       {key === AI_MODULES.MAPPING && <BarChart3 size={20} className="text-white" />}
                       {key === AI_MODULES.REGULATION && <FileText size={20} className="text-white" />}
@@ -556,6 +558,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                       {key === AI_MODULES.RISK && <AlertTriangle size={20} className="text-white" />}
                       {key === AI_MODULES.OMB_M25_21 && <Shield size={20} className="text-white" />}
                       {key === AI_MODULES.EO_14179 && <BookOpen size={20} className="text-white" />}
+                      {key === AI_MODULES.TITLE_13 && <FileText size={20} className="text-white" />}
                     </div>
                     <h3 className="font-bold text-lg text-gray-900">{module.title}</h3>
                   </div>
@@ -571,7 +574,8 @@ const LandingPage = ({ onLaunchDashboard }) => {
                         key === AI_MODULES.RESPONSIBLE_AI ? 'bg-purple-500' :
                         key === AI_MODULES.RISK ? 'bg-orange-500' :
                         key === AI_MODULES.OMB_M25_21 ? 'bg-pink-500' :
-                        'bg-amber-500'
+                        key === AI_MODULES.EO_14179 ? 'bg-amber-500' :
+                        'bg-blue-700'
                       }`}>
                         {QUESTIONNAIRES[key]?.length || 0}
                       </span>
@@ -613,7 +617,8 @@ const Dashboard = () => {
     [AI_MODULES.RESPONSIBLE_AI]: {},
     [AI_MODULES.RISK]: {},
     [AI_MODULES.OMB_M25_21]: {},
-    [AI_MODULES.EO_14179]: {}
+    [AI_MODULES.EO_14179]: {},
+    [AI_MODULES.TITLE_13]: {}
   });
   const [showResults, setShowResults] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
@@ -634,6 +639,7 @@ const Dashboard = () => {
           [AI_MODULES.RISK]: {},
           [AI_MODULES.OMB_M25_21]: {},
           [AI_MODULES.EO_14179]: {},
+          [AI_MODULES.TITLE_13]: {},
           ...parsedAnswers
         };
         setAnswers(completeAnswers);
@@ -820,7 +826,7 @@ const Dashboard = () => {
                 <li className="border rounded-lg overflow-hidden">
                   <div
                     className={`p-3 cursor-pointer flex items-center justify-between ${
-                      [AI_MODULES.REGULATION, AI_MODULES.OMB_M25_21, AI_MODULES.EO_14179].includes(activeModule)
+                      [AI_MODULES.REGULATION, AI_MODULES.OMB_M25_21, AI_MODULES.EO_14179, AI_MODULES.TITLE_13].includes(activeModule)
                         ? 'bg-blue-50' : 'hover:bg-gray-100'
                     }`}
                     onClick={() => setPolicyDropdownOpen(!policyDropdownOpen)}
@@ -834,7 +840,7 @@ const Dashboard = () => {
 
                   {policyDropdownOpen && (
                     <div className="bg-gray-50">
-                      {[AI_MODULES.REGULATION, AI_MODULES.OMB_M25_21, AI_MODULES.EO_14179].map((key) => {
+                      {[AI_MODULES.REGULATION, AI_MODULES.OMB_M25_21, AI_MODULES.EO_14179, AI_MODULES.TITLE_13].map((key) => {
                         const value = AI_MODULES_INFO[key];
                         return (
                           <div
@@ -846,6 +852,7 @@ const Dashboard = () => {
                               {key === AI_MODULES.REGULATION && <FileText size={18} className="mr-2 text-green-500" />}
                               {key === AI_MODULES.OMB_M25_21 && <Shield size={18} className="mr-2 text-pink-500" />}
                               {key === AI_MODULES.EO_14179 && <BookOpen size={18} className="mr-2 text-amber-700" />}
+                              {key === AI_MODULES.TITLE_13 && <FileText size={18} className="mr-2 text-blue-600" />}
                               <span className="text-sm">{value.title}</span>
                             </div>
                           </div>
@@ -891,7 +898,7 @@ const Dashboard = () => {
                 {/* Policy modules progress */}
                 <div className="mt-4 pt-3 border-t border-gray-200">
                   <h4 className="text-sm font-medium text-gray-600 mb-2">AI Regulations, Policies & Practices</h4>
-                  {[AI_MODULES.REGULATION, AI_MODULES.OMB_M25_21, AI_MODULES.EO_14179].map((key) => {
+                  {[AI_MODULES.REGULATION, AI_MODULES.OMB_M25_21, AI_MODULES.EO_14179, AI_MODULES.TITLE_13].map((key) => {
                     const value = AI_MODULES_INFO[key];
                     const moduleAnswers = answers[key] || {};
                     const questionsAnswered = Object.keys(moduleAnswers).length;

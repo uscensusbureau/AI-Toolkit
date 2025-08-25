@@ -121,7 +121,7 @@ const QUESTIONS_EO = {
       options: ["Complete compliance file exists", "Partial documentation", "Assembling file", "No record maintained"],
       category: "Transparency & Documentation Standards",
       weight: 1
-    },
+    }
   ]
 };
 

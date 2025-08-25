@@ -1,3 +1,4 @@
+// Enhanced model recommendations based on different combinations with specific ML models
 const MODEL_RECOMMENDATIONS = {
   // Tabular data - Classification recommendations
   "Tabular data-Classification-Supervised learning-High interpretability is essential": {

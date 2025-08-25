@@ -207,7 +207,7 @@ const GUIDE_CONTENT = {
       ]
     }
   ],
-    [AI_MODULES.OMB_M25_21]: [
+  [AI_MODULES.OMB_M25_21]: [
     {
       title: 'Documentation & Assessment Requirements',
       items: [
@@ -306,7 +306,54 @@ const GUIDE_CONTENT = {
         'Lifecycle Management: Clear decisions must be made to continue, revise, or phase out systems under EO 14179, with appropriate documentation of rationale and implementation plans.'
       ]
     }
-  ]
+  ],
+  [AI_MODULES.TITLE_13]: [
+    {
+      title: 'Data Collection & Authorized Use',
+      items: [
+        'Statistical Purpose Authority: Title 13 data must be collected and used exclusively for statistical purposes as defined under the statute. AI systems using this data must demonstrate that their purpose aligns with statistical analysis, research, and reporting functions authorized by Title 13.',
+        'Approved Collection Methods: Data collection must follow approved questionnaires and inquiries documented under Section 5 authority. Any AI system using Title 13 data should verify that the underlying data collection was properly authorized and documented.',
+        'External Data Integration: When incorporating data from federal, state, or private entities under Section 6, organizations must ensure these external sources were informed about AI system usage and that appropriate agreements are in place.',
+        'Training Data Compliance: AI models must be trained exclusively on data that was approved for statistical purposes, with clear documentation that mixed-use data has been properly segregated and authorized for AI applications.'
+      ]
+    },
+    {
+      title: 'Confidentiality & Disclosure Protection',
+      items: [
+        'PII Identification & Protection: Systems must identify and protect all personally identifiable information within Title 13 datasets. This includes implementing technical safeguards to prevent direct or indirect disclosure of individual-level information.',
+        'Aggregation & Anonymization Requirements: Any data sharing or output from AI systems must ensure information is properly aggregated or anonymized to prevent identification of individual respondents. Statistical disclosure control methods should be implemented and validated.',
+        'Sworn Personnel Requirements: All personnel with access to Title 13 data through AI systems must sign sworn confidentiality agreements as required by the statute. This includes developers, data scientists, and system administrators.',
+        'Legal Protection Maintenance: Datasets and system access logs must be protected from legal discovery or subpoena per Section 9 requirements. Organizations should implement appropriate legal and technical controls to maintain this protection.'
+      ]
+    },
+    {
+      title: 'AI-Specific Risk Management',
+      items: [
+        'Reidentification Testing: AI models using Title 13 data must undergo formal testing for reidentification and data leakage risks. This includes adversarial testing to identify potential privacy vulnerabilities specific to machine learning systems.',
+        'Indirect Disclosure Assessment: Organizations must evaluate whether AI model outputs could enable indirect disclosure of Title 13 protected information through inference attacks, model inversion, or other techniques specific to AI systems.',
+        'Model Output Controls: AI system outputs and summaries must be designed and validated to prevent revealing Title 13 protected data, with appropriate disclosure review procedures for all system outputs.',
+        'Algorithmic Transparency Balance: While maintaining Title 13 confidentiality requirements, organizations should document AI system functionality to the extent possible without compromising data protection obligations.'
+      ]
+    },
+    {
+      title: 'Address Data & Geographic Information',
+      items: [
+        'Address Verification Procedures: When AI systems use address data, verification must be conducted using authorized state and local government sources, with appropriate documentation of the verification process and results.',
+        'Census Liaison Coordination: Address validation activities should involve designated census liaisons when applicable, ensuring proper coordination and compliance with address confidentiality requirements.',
+        'Geographic Use Restrictions: Address data in AI systems must be used solely for census operations or statistical validation purposes, not for operational or administrative functions outside Title 13 authority.',
+        'Location Privacy Safeguards: AI systems processing geographic information must implement additional safeguards to prevent location-based reidentification or disclosure of sensitive demographic patterns.'
+      ]
+    },
+    {
+      title: 'Compliance Monitoring & Governance',
+      items: [
+        'Title 13 Compliance Review: Organizations must conduct documented Title 13 compliance reviews specifically for AI systems, addressing the unique privacy and security challenges posed by machine learning technologies.',
+        'Ongoing Monitoring Systems: Implement continuous monitoring for Title 13 compliance throughout the AI system lifecycle, including automated checks for potential disclosure risks and regular compliance audits.',
+        'Documentation Requirements: Maintain comprehensive documentation of Title 13 compliance measures, including data flow diagrams, privacy impact assessments, and technical safeguard implementations specific to AI systems.',
+        'Incident Response Procedures: Establish clear procedures for responding to potential Title 13 violations involving AI systems, including containment measures, notification requirements, and remediation steps.'
+      ]
+    }
+  ],
 }
 
 export default GUIDE_CONTENT

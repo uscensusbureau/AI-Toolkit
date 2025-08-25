@@ -5,7 +5,7 @@ const AI_MODULES = {
   RISK: 'ai-risk',
   OMB_M25_21: 'omb-m-25-21',
   EO_14179: 'eo-14179',
-  TITLE13: 'title-13',
+  TITLE_13: 'title-13',
   CIPSEA: 'cipsea',
 };
 

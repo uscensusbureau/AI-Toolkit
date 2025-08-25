@@ -121,7 +121,7 @@ const QUESTIONS_OMB = {
       options: ["Yes, public reports available", "Not publicly shared", "Limited to internal stakeholders", "Not Applicable"],
       category: "Public Transparency & Disclosure",
       weight: 1
-    },
+    }
   ]
 };
 
