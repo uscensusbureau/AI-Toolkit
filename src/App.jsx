@@ -705,6 +705,17 @@ const Dashboard = () => {
       recommendations: getRecommendations(categoryScores, activeModule)
     };
 
+    // Add model recommendations for AI Mapping Module
+    if (activeModule === AI_MODULES.MAPPING) {
+      const modelRec = getModelRecommendation(answers);
+      if (modelRec) {
+        results.modelRecommendations = {
+          recommendedModels: modelRec.recommendations || [],
+          pythonLibraries: modelRec.libraries || null
+        };
+      }
+    }
+
     // Convert to JSON
     const resultsJson = JSON.stringify(results, null, 2);
     const blob = new Blob([resultsJson], { type: 'application/json' });
@@ -983,19 +994,32 @@ const Dashboard = () => {
 
                   {!showResults ? (
                     <>
-                      <div className="mb-4 bg-gray-100 p-3 rounded-lg">
-                        <div className="flex justify-between mb-1">
-                          <span className="text-sm font-medium">Questionnaire Progress</span>
-                          <span className="text-sm">{progress.answered} of {progress.total} questions answered ({progress.percentage}%)</span>
-                        </div>
-                        <div className="w-full bg-gray-300 rounded-full h-2.5">
-                          <div
-                            className="h-2.5 rounded-full bg-blue-600"
-                            style={{ width: `${progress.percentage}%` }}
-                          ></div>
-                        </div>
-                        <div className="mt-2 text-sm text-gray-600">
-                          Page {currentPage + 1} of {totalPages}
+                      <div className="sticky top-0 z-10 mb-4 bg-gray-100 p-3 rounded-lg shadow-md border border-gray-200">
+                        <div className="flex justify-between items-center mb-2">
+                          <div className="flex-1">
+                            <div className="flex justify-between mb-1">
+                              <span className="text-sm font-medium">Questionnaire Progress</span>
+                              <span className="text-sm">{progress.answered} of {progress.total} questions answered ({progress.percentage}%)</span>
+                            </div>
+                            <div className="w-full bg-gray-300 rounded-full h-2.5">
+                              <div
+                                className="h-2.5 rounded-full bg-blue-600"
+                                style={{ width: `${progress.percentage}%` }}
+                              ></div>
+                            </div>
+                            <div className="mt-2 text-sm text-gray-600">
+                              Page {currentPage + 1} of {totalPages}
+                            </div>
+                          </div>
+                          <div className="ml-4">
+                            <button
+                              className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded shadow-sm"
+                              onClick={resetQuestionnaire}
+                              title="Reset all answers"
+                            >
+                              Reset
+                            </button>
+                          </div>
                         </div>
                       </div>
 
