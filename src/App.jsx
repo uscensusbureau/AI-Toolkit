@@ -172,7 +172,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
             </div>
             <button
               onClick={onLaunchDashboard}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-2 rounded-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-200"
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 cursor-pointer text-white px-6 py-2 rounded-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-200"
             >
               Launch Dashboard →
             </button>
@@ -193,17 +193,17 @@ const LandingPage = ({ onLaunchDashboard }) => {
                   <p className="text-gray-600 mb-6 text-lg">Comprehensive AI System Assessment & Compliance Platform</p>
                   <button
                     onClick={onLaunchDashboard}
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-200"
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 cursor-pointer text-white px-6 py-3 rounded-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-200"
                   >
                     Launch Dashboard →
                   </button>
                 </div>
 
                 {/* Goals */}
-                <div className="bg-gradient-to-br from-gray-800 to-gray-900 text-white rounded-xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-4 flex items-center">
-                    <div className="w-8 h-8 bg-white bg-opacity-20 rounded-lg mr-3 flex items-center justify-center">
-                      <Target size={16} />
+                <div className="bg-gradient-to-br from-blue-50 to-purple-50 text-white rounded-xl p-6 shadow-lg">
+                  <h3 className="text-xl font-bold mb-4 flex items-center text-gray-800">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 bg-opacity-20 rounded-lg mr-3 flex items-center justify-center">
+                      <Target className="text-white" size={16} />
                     </div>
                     Toolkit Goals
                   </h3>
@@ -213,8 +213,8 @@ const LandingPage = ({ onLaunchDashboard }) => {
                         <Target size={16} className="text-white" />
                       </div>
                       <div>
-                        <span className="font-semibold block mb-1">Assess & Gauge Compliance</span>
-                        <p className="text-sm text-gray-200">Comprehensive modules for compliance assessment across AI governance areas</p>
+                        <span className="font-semibold block mb-1 text-gray-800">Assess & Gauge Compliance</span>
+                        <p className="text-sm text-gray-800">Comprehensive modules for compliance assessment across AI governance areas</p>
                       </div>
                     </div>
                     <div className="flex items-start p-3 bg-white bg-opacity-10 rounded-lg">
@@ -222,8 +222,8 @@ const LandingPage = ({ onLaunchDashboard }) => {
                         <Lightbulb size={16} className="text-white" />
                       </div>
                       <div>
-                        <span className="font-semibold block mb-1">Receive Recommendations</span>
-                        <p className="text-sm text-gray-200">Detailed assessments and actionable recommendations for your AI systems</p>
+                        <span className="font-semibold block mb-1 text-gray-800">Receive Recommendations</span>
+                        <p className="text-sm text-gray-800">Detailed assessments and actionable recommendations for your AI systems</p>
                       </div>
                     </div>
                     <div className="flex items-start p-3 bg-white bg-opacity-10 rounded-lg">
@@ -231,8 +231,8 @@ const LandingPage = ({ onLaunchDashboard }) => {
                         <Download size={16} className="text-white" />
                       </div>
                       <div>
-                        <span className="font-semibold block mb-1">Download Artifacts</span>
-                        <p className="text-sm text-gray-200">Generate compliance artifacts for documentation and reporting</p>
+                        <span className="font-semibold block mb-1 text-gray-800">Download Artifacts</span>
+                        <p className="text-sm text-gray-800">Generate compliance artifacts for documentation and reporting</p>
                       </div>
                     </div>
                   </div>
@@ -297,7 +297,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                   3-Step Process
                 </h3>
                 <div className="space-y-6">
-                  <div className="bg-white rounded-xl p-6 shadow-md transform hover:scale-105 transition-all duration-200">
+                  <div className="bg-white rounded-xl p-6 shadow-md transition-all duration-200">
                     <div className="flex items-center mb-4">
                       <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mr-4 flex items-center justify-center shadow-lg">
                         <span className="font-bold text-white text-lg">1</span>
@@ -306,7 +306,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                     </div>
                     <p className="text-gray-600">Select which compliance area you want to assess first from our comprehensive module library</p>
                   </div>
-                  <div className="bg-white rounded-xl p-6 shadow-md transform hover:scale-105 transition-all duration-200">
+                  <div className="bg-white rounded-xl p-6 shadow-md transition-all duration-200">
                     <div className="flex items-center mb-4">
                       <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full mr-4 flex items-center justify-center shadow-lg">
                         <span className="font-bold text-white text-lg">2</span>
@@ -315,7 +315,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                     </div>
                     <p className="text-gray-600">Complete the assessment questionnaire with guided questions tailored to your selected module</p>
                   </div>
-                  <div className="bg-white rounded-xl p-6 shadow-md transform hover:scale-105 transition-all duration-200">
+                  <div className="bg-white rounded-xl p-6 shadow-md transition-all duration-200">
                     <div className="flex items-center mb-4">
                       <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full mr-4 flex items-center justify-center shadow-lg">
                         <span className="font-bold text-white text-lg">3</span>
@@ -329,7 +329,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                 <div className="mt-8 text-center">
                   <button
                     onClick={onLaunchDashboard}
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-200"
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 cursor-pointer text-white px-8 py-3 rounded-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-200"
                   >
                     Start Assessment →
                   </button>
@@ -345,7 +345,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                   Flexible Usage
                 </h3>
                 <div className="space-y-4">
-                  <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <div className="bg-white rounded-lg p-4 shadow-sm transition-shadow duration-200">
                     <div className="flex items-start">
                       <div className="w-6 h-6 bg-gradient-to-br from-green-400 to-green-600 rounded-full mr-3 mt-1 flex items-center justify-center">
                         <CheckCircle size={12} className="text-white" />
@@ -356,7 +356,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <div className="bg-white rounded-lg p-4 shadow-sm transition-shadow duration-200">
                     <div className="flex items-start">
                       <div className="w-6 h-6 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mr-3 mt-1 flex items-center justify-center">
                         <CheckCircle size={12} className="text-white" />
@@ -367,7 +367,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <div className="bg-white rounded-lg p-4 shadow-sm transition-shadow duration-200">
                     <div className="flex items-start">
                       <div className="w-6 h-6 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full mr-3 mt-1 flex items-center justify-center">
                         <CheckCircle size={12} className="text-white" />
@@ -427,7 +427,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                 Module Usage by Development Phase
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                <div className="bg-gradient-to-br from-orange-100 to-orange-200 rounded-lg p-4 shadow-md transform hover:scale-105 transition-all duration-200">
+                <div className="bg-gradient-to-br from-orange-100 to-orange-200 rounded-lg p-4 shadow-md transform transition-all duration-200">
                   <div className="border-l-4 border-orange-500 pl-3 mb-3">
                     <h4 className="font-bold text-orange-700 text-sm">Planning</h4>
                     <p className="text-xs text-gray-600">Application Context</p>
@@ -438,7 +438,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg p-4 shadow-md transform hover:scale-105 transition-all duration-200">
+                <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg p-4 shadow-md transform transition-all duration-200">
                   <div className="border-l-4 border-blue-500 pl-3 mb-3">
                     <h4 className="font-bold text-blue-700 text-sm">Data Collection</h4>
                     <p className="text-xs text-gray-600">Data & Input</p>
@@ -449,7 +449,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-green-100 to-green-200 rounded-lg p-4 shadow-md transform hover:scale-105 transition-all duration-200">
+                <div className="bg-gradient-to-br from-green-100 to-green-200 rounded-lg p-4 shadow-md transform transition-all duration-200">
                   <div className="border-l-4 border-green-500 pl-3 mb-3">
                     <h4 className="font-bold text-green-700 text-sm">Model Build</h4>
                     <p className="text-xs text-gray-600">AI Model Development</p>
@@ -460,7 +460,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-lg p-4 shadow-md transform hover:scale-105 transition-all duration-200">
+                <div className="bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-lg p-4 shadow-md transform transition-all duration-200">
                   <div className="border-l-4 border-emerald-600 pl-3 mb-3">
                     <h4 className="font-bold text-emerald-700 text-sm">Validation</h4>
                     <p className="text-xs text-gray-600">Verify & Validate</p>
@@ -472,7 +472,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg p-4 shadow-md transform hover:scale-105 transition-all duration-200">
+                <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg p-4 shadow-md transform transition-all duration-200">
                   <div className="border-l-4 border-purple-500 pl-3 mb-3">
                     <h4 className="font-bold text-purple-700 text-sm">Deployment</h4>
                     <p className="text-xs text-gray-600">Task & Output</p>
@@ -491,7 +491,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                 You can also evaluate your project for all compliance requirements{' '}
                 <button
                   onClick={onLaunchDashboard}
-                  className="text-blue-600 hover:text-blue-800 underline font-medium"
+                  className="text-blue-600 hover:text-blue-800 underline font-medium cursor-pointer"
                 >
                   here
                 </button>
@@ -501,7 +501,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
 
             {/* Compliance Requirements */}
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-200">
+              <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl p-6 shadow-md transition-shadow duration-200">
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-500 rounded-lg mr-3 flex items-center justify-center shadow-md">
                     <Shield size={18} className="text-white" />
@@ -517,7 +517,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                   </div>
                 </div>
               </div>
-              <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-200">
+              <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 shadow-md transition-shadow duration-200">
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg mr-3 flex items-center justify-center shadow-md">
                     <BookOpen size={18} className="text-white" />
@@ -541,7 +541,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
             <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Available Assessment Modules</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {Object.entries(AI_MODULES_INFO).map(([key, module]) => (
-                <div key={key} className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 border border-gray-100">
+                <div key={key} className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 shadow-md border border-gray-100">
                   <div className="flex items-center mb-4">
                     <div className={`w-12 h-12 rounded-xl mr-3 flex items-center justify-center shadow-md ${
                       key === AI_MODULES.MAPPING ? 'bg-gradient-to-br from-blue-400 to-blue-600' :
@@ -589,10 +589,10 @@ const LandingPage = ({ onLaunchDashboard }) => {
             <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-xl p-8 text-center shadow-xl">
               <div className="bg-white bg-opacity-10 rounded-xl p-6 backdrop-blur-sm">
                 <h3 className="text-2xl font-bold mb-3 text-white">Ready to Get Started?</h3>
-                <p className="text-lg mb-6 text-blue-100">Begin your AI governance assessment and ensure compliance across your AI lifecycle.</p>
+                <p className="text-lg mb-6 text-gray-800">Begin your AI governance assessment and ensure compliance across your AI lifecycle.</p>
                 <button
                   onClick={onLaunchDashboard}
-                  className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-bold text-lg shadow-lg transform hover:scale-105 transition-all duration-200"
+                  className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg cursor-pointer font-bold text-lg shadow-lg transform hover:scale-105 transition-all duration-200"
                 >
                   Launch Assessment Dashboard
                 </button>
@@ -776,7 +776,7 @@ const Dashboard = () => {
           <div className="flex items-center">
             <button
               onClick={() => setShowLandingPage(true)}
-              className="mr-4 p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+              className="mr-4 p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
               title="Back to Home"
             >
               <Home size={20} />
@@ -806,7 +806,7 @@ const Dashboard = () => {
                 <h2 className="text-xl font-medium">Modules</h2>
                 <button
                   onClick={() => setShowLandingPage(true)}
-                  className="flex items-center text-sm px-3 py-1 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  className="flex items-center text-sm px-3 py-1 text-blue-600 hover:bg-blue-50 cursor-pointer rounded-lg transition-colors"
                   title="Back to Home"
                 >
                   <Home size={16} className="mr-1" />
@@ -949,7 +949,7 @@ const Dashboard = () => {
               {progress.answered > 0 && (
                 <div className="mt-4">
                   <button
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded flex items-center justify-center"
+                    className="w-full bg-blue-600 hover:bg-blue-700 cursor-pointer text-white py-2 rounded flex items-center justify-center"
                     onClick={() => setShowResults(true)}
                   >
                     <BarChart3 size={16} className="mr-2" />
@@ -967,13 +967,13 @@ const Dashboard = () => {
                 <h2 className="text-xl font-medium">{AI_MODULES_INFO[activeModule].title}</h2>
                 <div>
                   <button
-                    className={`mr-2 ${moduleView === 'questionnaire' ? 'bg-blue-600 text-white' : 'bg-gray-200'} px-3 py-1 rounded`}
+                    className={`cursor-pointer mr-2 ${moduleView === 'questionnaire' ? 'bg-blue-600 text-white' : 'bg-gray-200'} px-3 py-1 rounded`}
                     onClick={() => setModuleView('questionnaire')}
                   >
                     Questionnaire
                   </button>
                   <button
-                    className={`${moduleView === 'guide' ? 'bg-blue-600 text-white' : 'bg-gray-200'} px-3 py-1 rounded`}
+                    className={`cursor-pointer ${moduleView === 'guide' ? 'bg-blue-600 text-white' : 'bg-gray-200'} px-3 py-1 rounded`}
                     onClick={() => setModuleView('guide')}
                   >
                     Information Guide
@@ -1013,7 +1013,7 @@ const Dashboard = () => {
                           </div>
                           <div className="ml-4">
                             <button
-                              className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded shadow-sm"
+                              className="bg-red-500 hover:bg-red-600 cursor-pointer text-white text-sm px-3 py-1 rounded shadow-sm"
                               onClick={resetQuestionnaire}
                               title="Reset all answers"
                             >
@@ -1040,7 +1040,7 @@ const Dashboard = () => {
                                 {q.options.map((option, optIndex) => (
                                   <button
                                     key={optIndex}
-                                    className={`p-2 border rounded w-full ${answers[activeModule][absoluteIndex] === option ? 'bg-blue-600 text-white' : 'border-gray-300'}`}
+                                    className={`cursor-pointer p-2 border rounded w-full ${answers[activeModule][absoluteIndex] === option ? 'bg-blue-600 text-white' : 'border-gray-300'}`}
                                     onClick={() => handleAnswer(absoluteIndex, option)}
                                   >
                                     {option}
@@ -1054,7 +1054,7 @@ const Dashboard = () => {
 
                       <div className="mt-6 flex justify-between">
                         <button
-                          className={`flex items-center ${currentPage === 0 ? 'bg-gray-200 cursor-not-allowed' : 'bg-gray-300 hover:bg-gray-400'} text-gray-800 px-4 py-2 rounded`}
+                          className={`flex items-center ${currentPage === 0 ? 'bg-gray-200 cursor-not-allowed' : 'cursor-pointer bg-gray-300 hover:bg-gray-400'} text-gray-800 px-4 py-2 rounded`}
                           onClick={prevPage}
                           disabled={currentPage === 0}
                         >
@@ -1064,13 +1064,13 @@ const Dashboard = () => {
 
                         <div className="flex space-x-2">
                           <button
-                            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
+                            className="bg-gray-300 hover:bg-gray-400 text-gray-800 cursor-pointer px-4 py-2 rounded"
                             onClick={resetQuestionnaire}
                           >
                             Reset
                           </button>
                           <button
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                            className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer px-4 py-2 rounded"
                             onClick={submitQuestionnaire}
                           >
                             View Results
@@ -1078,7 +1078,7 @@ const Dashboard = () => {
                         </div>
 
                         <button
-                          className={`flex items-center ${currentPage >= totalPages - 1 ? 'bg-gray-200 cursor-not-allowed' : 'bg-gray-300 hover:bg-gray-400'} text-gray-800 px-4 py-2 rounded`}
+                          className={`flex items-center ${currentPage >= totalPages - 1 ? 'bg-gray-200 cursor-not-allowed' : 'cursor-pointer bg-gray-300 hover:bg-gray-400'} text-gray-800 px-4 py-2 rounded`}
                           onClick={nextPage}
                           disabled={currentPage >= totalPages - 1}
                         >
@@ -1264,7 +1264,7 @@ const Dashboard = () => {
 
       {/* Footer */}
       <footer className="bg-gray-800 text-white p-4 text-center">
-        <p>AI Governance Dashboard © 2025 - Last updated: May 7, 2025</p>
+        <p>AI Governance Dashboard © 2025 - Last updated: August 27, 2025</p>
       </footer>
     </div>
   );
