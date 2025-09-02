@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/AI-Toolkit/",
+  base: "/AI-Toolkit/pr-preview/pr-34/",
   plugins: [
     react(),
     tailwindcss()
