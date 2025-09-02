@@ -43,13 +43,13 @@ const AI_MODULES_INFO = {
     questTitle: 'Title 13 Compliance Questionnaire',
     color: '#607D8B'
   },
-  [AI_MODULES.CIPSEA]: {
-    title: 'CIPSEA',
-    description: 'CIPSEA Model Specific AI Compliance Questions',
-    guideTitle: 'CIPSEA Compliance Guide',
-    questTitle: 'CIPSEA Compliance Questionnaire',
-    color: '#1B701B'
-  },
+  // [AI_MODULES.CIPSEA]: {
+  //   title: 'CIPSEA',
+  //   description: 'CIPSEA Model Specific AI Compliance Questions',
+  //   guideTitle: 'CIPSEA Compliance Guide',
+  //   questTitle: 'CIPSEA Compliance Questionnaire',
+  //   color: '#1B701B'
+  // },
   [AI_MODULES.RISK]: {
     title: 'AI Risk Management',
     description: 'Identify, evaluate, respond to, and govern AI risks through the NIST AI Risk Management Framework.',
