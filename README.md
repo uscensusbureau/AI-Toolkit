@@ -1,5 +1,5 @@
 # AI Tookit
-A React + Vite website for the AI Toolkit.
+A proof-of-concept React + Vite website for the AI Toolkit. In its current state this application is not intended for production deployment.
 
 ## Installation
 
