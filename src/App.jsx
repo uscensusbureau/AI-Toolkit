@@ -46,7 +46,6 @@ const getComplianceLevel = (percentage) => {
   return { level: 'Low Compliance', color: '#F44336', icon: <XCircle size={20} /> };
 };
 
-// NEW FUNCTION: Get model recommendations based on selected options
 const getModelRecommendation = (answers) => {
   if (!answers || !answers[AI_MODULES.MAPPING]) return null;
 
@@ -713,6 +712,7 @@ const Dashboard = () => {
           recommendedModels: modelRec.recommendations || [],
           pythonLibraries: modelRec.libraries || null
         };
+        delete results.complianceLevel; // Remove compliance level for mapping module
       }
     }
 
@@ -1095,63 +1095,65 @@ const Dashboard = () => {
                           <h3 className="text-xl font-bold">Assessment Results</h3>
                         </div>
                         <div className="p-4">
-                          <div className="mb-4">
-                            <h4 className="text-lg font-medium mb-2">Overall Compliance Score</h4>
-                            <div className="flex items-center mb-2">
-                              <div className="flex-grow">
-                                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                                  <div
-                                    className="h-2.5 rounded-full"
-                                    style={{
-                                      width: `${moduleScore.percentage}%`,
-                                      backgroundColor: complianceLevel.color
-                                    }}
-                                  ></div>
-                                </div>
-                              </div>
-                              <span className="ml-4 font-bold">
-                                {moduleScore.percentage}%
-                              </span>
-                            </div>
-                            <div className="flex items-center">
-                              <span className="mr-2" style={{ color: complianceLevel.color }}>
-                                {complianceLevel.icon}
-                              </span>
-                              <span style={{ color: complianceLevel.color }}>
-                                {complianceLevel.level}
-                              </span>
-                            </div>
-                            <div className="mt-2 text-sm text-gray-600">
-                              Questions Answered: {progress.answered} of {progress.total} ({progress.percentage}%)
-                            </div>
-                          </div>
 
                           {activeModule !== AI_MODULES.MAPPING && (
-                            <div className="mt-8">
-                              <h4 className="text-lg font-medium mb-4">Category Breakdown</h4>
-                              <div className="h-64">
-                                <ResponsiveContainer width="100%" height="100%">
-                                  {activeModule === AI_MODULES.RESPONSIBLE_AI ? (
-                                    <RadarChart outerRadius={90} data={categoryScores}>
-                                      <PolarGrid />
-                                      <PolarAngleAxis dataKey="category" />
-                                      <PolarRadiusAxis domain={[0, 100]} />
-                                      <Radar name="Score" dataKey="percentage" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-                                      <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
-                                    </RadarChart>
-                                  ) : (
-                                    <BarChart data={categoryScores}>
-                                      <CartesianGrid strokeDasharray="3 3" />
-                                      <XAxis dataKey="category" />
-                                      <YAxis domain={[0, 100]} />
-                                      <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
-                                      <Legend />
-                                      <Bar dataKey="percentage" name="Compliance Score" fill="#8884d8" />
-                                    </BarChart>
-                                  )}
-                                </ResponsiveContainer>
+                            <>
+                              <div className="mb-4">
+                                <h4 className="text-lg font-medium mb-2">Overall Compliance Score</h4>
+                                <div className="flex items-center mb-2">
+                                  <div className="flex-grow">
+                                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                                      <div
+                                        className="h-2.5 rounded-full"
+                                        style={{
+                                          width: `${moduleScore.percentage}%`,
+                                          backgroundColor: complianceLevel.color
+                                        }}
+                                      ></div>
+                                    </div>
+                                  </div>
+                                  <span className="ml-4 font-bold">
+                                    {moduleScore.percentage}%
+                                  </span>
+                                </div>
+                                <div className="flex items-center">
+                                  <span className="mr-2" style={{ color: complianceLevel.color }}>
+                                    {complianceLevel.icon}
+                                  </span>
+                                  <span style={{ color: complianceLevel.color }}>
+                                    {complianceLevel.level}
+                                  </span>
+                                </div>
+                                <div className="mt-2 text-sm text-gray-600">
+                                  Questions Answered: {progress.answered} of {progress.total} ({progress.percentage}%)
+                                </div>
                               </div>
-                            </div>
+                              <div className="mt-8">
+                                <h4 className="text-lg font-medium mb-4">Category Breakdown</h4>
+                                <div className="h-64">
+                                  <ResponsiveContainer width="100%" height="100%">
+                                    {activeModule === AI_MODULES.RESPONSIBLE_AI ? (
+                                      <RadarChart outerRadius={90} data={categoryScores}>
+                                        <PolarGrid />
+                                        <PolarAngleAxis dataKey="category" />
+                                        <PolarRadiusAxis domain={[0, 100]} />
+                                        <Radar name="Score" dataKey="percentage" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                                        <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
+                                      </RadarChart>
+                                    ) : (
+                                      <BarChart data={categoryScores}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="category" />
+                                        <YAxis domain={[0, 100]} />
+                                        <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
+                                        <Legend />
+                                        <Bar dataKey="percentage" name="Compliance Score" fill="#8884d8" />
+                                      </BarChart>
+                                    )}
+                                  </ResponsiveContainer>
+                                </div>
+                              </div>
+                            </>
                           )}
 
                           {activeModule === AI_MODULES.MAPPING && modelRecommendation && (
