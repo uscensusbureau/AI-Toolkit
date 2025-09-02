@@ -206,7 +206,154 @@ const GUIDE_CONTENT = {
         'Transparency Practices: Share relevant risk insights with internal and external stakeholders through appropriate channels. Determine what information should be shared with different stakeholder groups—from technical details for regulators to accessible summaries for affected communities. For public-facing systems, publish appropriate documentation about system purpose, capabilities, limitations, and governance. For internal systems, ensure decision-makers understand key risk factors and controls.'
       ]
     }
-  ]
+  ],
+  [AI_MODULES.OMB_M25_21]: [
+    {
+      title: 'Documentation & Assessment Requirements',
+      items: [
+        'System Documentation: AI systems must have clear descriptions of intended use, objectives, and expected outcomes. This documentation serves as the foundation for all other compliance activities and should be comprehensive enough to understand the system\'s purpose and scope.',
+        'High-Impact Assessment: All AI systems must undergo formal assessment to determine if they qualify as high-impact use cases. This assessment should follow established criteria and methodologies, with clear documentation of the rationale for the determination.',
+        'Rationale Documentation: For systems determined not to be high-impact, the reasoning must be thoroughly documented and justifiable. This documentation should address all relevant factors that led to the determination and be available for review.',
+        'Pre-Deployment Testing: Systems must undergo comprehensive testing before deployment to validate they meet intended goals and mitigate foreseeable risks. Testing should be systematic, documented, and address all critical system functions and risk scenarios.'
+      ]
+    },
+    {
+      title: 'AI Impact Assessment (AIIA) Components',
+      items: [
+        'System Overview: The AIIA must include comprehensive documentation of system overview, objectives, and intended uses. This should provide stakeholders with a clear understanding of what the system does and how it will be used.',
+        'Dataset Documentation: Complete documentation of datasets used for training and testing, including data sources, collection methods, preprocessing steps, and any limitations or biases identified in the data.',
+        'Performance Metrics: Clear articulation of anticipated benefits and relevant performance metrics, including how success will be measured and what constitutes acceptable performance levels.',
+        'Rights Impact Analysis: Thorough assessment of potential impacts on privacy, civil rights, and civil liberties, with particular attention to vulnerable populations and protected characteristics.',
+        'Public Cost-Benefit Analysis: Documentation of expected costs and benefits to the public, including both quantitative and qualitative impacts on citizens, communities, and society.',
+        'Independent Evaluation: Documentation of independent evaluation or red-teaming activities, including methodologies used, findings, and how results informed system development.',
+        'Risk Documentation: Clear documentation of risk acceptance decisions and residual risks that remain after mitigation efforts, including ongoing monitoring plans.'
+      ]
+    },
+    {
+      title: 'Human Oversight & Safety Mechanisms',
+      items: [
+        'Human Oversight: Systems must include meaningful mechanisms for human oversight and intervention, ensuring that humans retain appropriate control over AI-driven decisions and processes.',
+        'Fail-Safe Mechanisms: Implementation of documented fail-safes or fallback mechanisms to prevent or mitigate unintended failure or harm, with clear procedures for activation and response.',
+        'Appeals Process: Establishment of documented processes by which individuals can appeal or seek redress if affected by decisions from the AI system, ensuring due process and fair treatment.'
+      ]
+    },
+    {
+      title: 'Monitoring & Accountability Framework',
+      items: [
+        'Ongoing Monitoring: Implementation of documented procedures for ongoing monitoring to detect unintended consequences after deployment, including key performance indicators and alerting mechanisms.',
+        'Audit Trails: Maintenance of comprehensive audit logs or activity records sufficient to trace decisions, data processing, and automated outputs for accountability and debugging purposes.',
+        'Feedback Mechanisms: Establishment of mechanisms for the public or end users to submit feedback on the AI system, ensuring continuous improvement and stakeholder engagement.'
+      ]
+    },
+    {
+      title: 'Public Transparency & Disclosure',
+      items: [
+        'Public Publication: The AIIA or appropriate summary must be published or made available on agency websites, ensuring transparency and public accountability for AI system deployment.',
+        'Monitoring Reports: Results of ongoing monitoring must be made publicly available as required, providing transparency about system performance and any issues identified post-deployment.'
+      ]
+    }
+  ],
+  [AI_MODULES.EO_14179]: [
+    {
+      title: 'Ideological Bias Prevention & Technical Integrity',
+      items: [
+        'Bias-Free Development: AI systems must be developed free from ideological bias or engineered social agendas, with documentation and testing to verify technical objectivity in system design and implementation.',
+        'Technical Risk Focus: Safety and trustworthiness assessments should focus on technical risks and performance rather than imposing ideological or extraneous constraints that could compromise system effectiveness.',
+        'Objective Testing: Fairness and bias testing should be aligned to technical risks and objective performance criteria, avoiding the imposition of engineered social norms that could bias system outcomes.',
+        'Evidence-Based Assessment: All evaluations should be based on empirical evidence and technical merit rather than ideological considerations, ensuring systems serve their intended technical purposes.'
+      ]
+    },
+    {
+      title: 'Strategic Alignment & National Competitiveness',
+      items: [
+        'National Objectives: Systems must align with goals of promoting human flourishing, economic competitiveness, and national security, with clear documentation of how each system contributes to these objectives.',
+        'U.S. Leadership: Technical evaluations should align with fostering U.S. leadership in safe, trustworthy AI, ensuring American innovation and competitive advantage in AI technologies.',
+        'Competitiveness Documentation: The intended benefit to U.S. competitiveness or security must be clearly documented and tied to broader strategic objectives and national AI strategy.',
+        'Global Leadership: Systems should contribute to U.S. global AI leadership under the National AI Strategy, with clear linkages between individual systems and broader strategic goals.'
+      ]
+    },
+    {
+      title: 'Policy Compliance & Regulatory Efficiency',
+      items: [
+        'Legacy Policy Review: Systems previously subject to EO 14110 directives must be reviewed to ensure no policies inconsistent with EO 14179 still apply, with documented resolution of any conflicts.',
+        'Updated Guidance Compliance: System documentation must comply with revisions to OMB M-24-10 and related documents as required by EO 14179, ensuring alignment with current policy frameworks.',
+        'Risk Classification Review: Risk classifications and waivers must be reviewed under new OMB guidance to ensure appropriate categorization and treatment under updated policy requirements.',
+        'Regulatory Barrier Removal: Development and deployment processes should be reviewed to ensure no undue regulatory barriers or delays inconsistent with EO 14179 objectives exist.',
+        'Streamlined Procurement: Procurement and contracting processes should be executed to accelerate AI adoption and align with EO priorities, reducing unnecessary delays and obstacles.'
+      ]
+    },
+    {
+      title: 'Transparency & Documentation Standards',
+      items: [
+        'Public Disclosure Readiness: Systems must maintain records suitable for potential public disclosure of decision processes and rationale, ensuring transparency while protecting sensitive information.',
+        'Comprehensive Audit Trails: AI systems must maintain comprehensive audit logs or provenance records to trace processing and outputs, supporting accountability and oversight requirements.',
+        'Central Compliance Files: A central compliance file must be maintained for each system under EO 14179, containing all relevant documentation and compliance evidence.'
+      ]
+    },
+    {
+      title: 'Appeals & Redress Mechanisms',
+      items: [
+        'Individual Redress: Systems must include appeals and redress mechanisms for affected individuals, ensuring due process and fair treatment for those impacted by AI-driven decisions.',
+        'Accessible Processes: Redress mechanisms should be accessible, well-documented, and provide meaningful opportunities for individuals to challenge decisions or seek relief from adverse impacts.'
+      ]
+    },
+    {
+      title: 'Agency Integration & Coordination',
+      items: [
+        'Agency-Wide Coordination: Compliance must be coordinated with agency-wide EO 14179 policy revisions, ensuring consistent implementation across all AI systems and activities.',
+        'Compliance Portfolio: Systems must be included in agency compliance plans under EO 14179, with appropriate tracking and oversight mechanisms in place.',
+        'Updated Standards Alignment: Systems must be compliant with updated agency standards post-EO 14179, ensuring ongoing alignment with evolving policy requirements.',
+        'Lifecycle Management: Clear decisions must be made to continue, revise, or phase out systems under EO 14179, with appropriate documentation of rationale and implementation plans.'
+      ]
+    }
+  ],
+  [AI_MODULES.TITLE_13]: [
+    {
+      title: 'Data Collection & Authorized Use',
+      items: [
+        'Statistical Purpose Authority: Title 13 data must be collected and used exclusively for statistical purposes as defined under the statute. AI systems using this data must demonstrate that their purpose aligns with statistical analysis, research, and reporting functions authorized by Title 13.',
+        'Approved Collection Methods: Data collection must follow approved questionnaires and inquiries documented under Section 5 authority. Any AI system using Title 13 data should verify that the underlying data collection was properly authorized and documented.',
+        'External Data Integration: When incorporating data from federal, state, or private entities under Section 6, organizations must ensure these external sources were informed about AI system usage and that appropriate agreements are in place.',
+        'Training Data Compliance: AI models must be trained exclusively on data that was approved for statistical purposes, with clear documentation that mixed-use data has been properly segregated and authorized for AI applications.'
+      ]
+    },
+    {
+      title: 'Confidentiality & Disclosure Protection',
+      items: [
+        'PII Identification & Protection: Systems must identify and protect all personally identifiable information within Title 13 datasets. This includes implementing technical safeguards to prevent direct or indirect disclosure of individual-level information.',
+        'Aggregation & Anonymization Requirements: Any data sharing or output from AI systems must ensure information is properly aggregated or anonymized to prevent identification of individual respondents. Statistical disclosure control methods should be implemented and validated.',
+        'Sworn Personnel Requirements: All personnel with access to Title 13 data through AI systems must sign sworn confidentiality agreements as required by the statute. This includes developers, data scientists, and system administrators.',
+        'Legal Protection Maintenance: Datasets and system access logs must be protected from legal discovery or subpoena per Section 9 requirements. Organizations should implement appropriate legal and technical controls to maintain this protection.'
+      ]
+    },
+    {
+      title: 'AI-Specific Risk Management',
+      items: [
+        'Reidentification Testing: AI models using Title 13 data must undergo formal testing for reidentification and data leakage risks. This includes adversarial testing to identify potential privacy vulnerabilities specific to machine learning systems.',
+        'Indirect Disclosure Assessment: Organizations must evaluate whether AI model outputs could enable indirect disclosure of Title 13 protected information through inference attacks, model inversion, or other techniques specific to AI systems.',
+        'Model Output Controls: AI system outputs and summaries must be designed and validated to prevent revealing Title 13 protected data, with appropriate disclosure review procedures for all system outputs.',
+        'Algorithmic Transparency Balance: While maintaining Title 13 confidentiality requirements, organizations should document AI system functionality to the extent possible without compromising data protection obligations.'
+      ]
+    },
+    {
+      title: 'Address Data & Geographic Information',
+      items: [
+        'Address Verification Procedures: When AI systems use address data, verification must be conducted using authorized state and local government sources, with appropriate documentation of the verification process and results.',
+        'Census Liaison Coordination: Address validation activities should involve designated census liaisons when applicable, ensuring proper coordination and compliance with address confidentiality requirements.',
+        'Geographic Use Restrictions: Address data in AI systems must be used solely for census operations or statistical validation purposes, not for operational or administrative functions outside Title 13 authority.',
+        'Location Privacy Safeguards: AI systems processing geographic information must implement additional safeguards to prevent location-based reidentification or disclosure of sensitive demographic patterns.'
+      ]
+    },
+    {
+      title: 'Compliance Monitoring & Governance',
+      items: [
+        'Title 13 Compliance Review: Organizations must conduct documented Title 13 compliance reviews specifically for AI systems, addressing the unique privacy and security challenges posed by machine learning technologies.',
+        'Ongoing Monitoring Systems: Implement continuous monitoring for Title 13 compliance throughout the AI system lifecycle, including automated checks for potential disclosure risks and regular compliance audits.',
+        'Documentation Requirements: Maintain comprehensive documentation of Title 13 compliance measures, including data flow diagrams, privacy impact assessments, and technical safeguard implementations specific to AI systems.',
+        'Incident Response Procedures: Establish clear procedures for responding to potential Title 13 violations involving AI systems, including containment measures, notification requirements, and remediation steps.'
+      ]
+    }
+  ],
 }
 
 export default GUIDE_CONTENT
