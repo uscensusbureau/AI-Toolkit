@@ -541,22 +541,14 @@ const LandingPage = ({ onLaunchDashboard }) => {
               {Object.entries(AI_MODULES_INFO).map(([key, module]) => (
                 <div key={key} className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 shadow-md border border-gray-100">
                   <div className="flex items-center mb-4">
-                    <div className={`w-12 h-12 rounded-xl mr-3 flex items-center justify-center shadow-md ${
-                      key === AI_MODULES.MAPPING ? 'bg-gradient-to-br from-blue-400 to-blue-600' :
-                      key === AI_MODULES.REGULATION ? 'bg-gradient-to-br from-green-400 to-green-600' :
-                      key === AI_MODULES.RESPONSIBLE_AI ? 'bg-gradient-to-br from-purple-400 to-purple-600' :
-                      key === AI_MODULES.RISK ? 'bg-gradient-to-br from-orange-400 to-orange-600' :
-                      key === AI_MODULES.OMB_M25_21 ? 'bg-gradient-to-br from-pink-400 to-pink-600' :
-                      key === AI_MODULES.EO_14179 ? 'bg-gradient-to-br from-amber-400 to-amber-600' :
-                      'bg-gradient-to-br from-blue-700 to-blue-800'
-                    }`}>
-                      {key === AI_MODULES.MAPPING && <BarChart3 size={20} className="text-white" />}
-                      {key === AI_MODULES.REGULATION && <FileText size={20} className="text-white" />}
-                      {key === AI_MODULES.RESPONSIBLE_AI && <CheckCircle size={20} className="text-white" />}
-                      {key === AI_MODULES.RISK && <AlertTriangle size={20} className="text-white" />}
-                      {key === AI_MODULES.OMB_M25_21 && <Shield size={20} className="text-white" />}
-                      {key === AI_MODULES.EO_14179 && <BookOpen size={20} className="text-white" />}
-                      {key === AI_MODULES.TITLE_13 && <FileText size={20} className="text-white" />}
+                    <div style={ {backgroundColor: "#D7DAE0"}} className="w-12 h-12 rounded-xl mr-3 flex items-center justify-center shadow-md" >
+                      {key === AI_MODULES.MAPPING && <BarChart3 size={20} className="text-black" />}
+                      {key === AI_MODULES.REGULATION && <FileText size={20} className="text-black" />}
+                      {key === AI_MODULES.RESPONSIBLE_AI && <CheckCircle size={20} className="text-black" />}
+                      {key === AI_MODULES.RISK && <AlertTriangle size={20} className="text-black" />}
+                      {key === AI_MODULES.OMB_M25_21 && <Shield size={20} className="text-black" />}
+                      {key === AI_MODULES.EO_14179 && <BookOpen size={20} className="text-black" />}
+                      {key === AI_MODULES.TITLE_13 && <FileText size={20} className="text-black" />}
                     </div>
                     <h3 className="font-bold text-lg text-gray-900">{module.title}</h3>
                   </div>
