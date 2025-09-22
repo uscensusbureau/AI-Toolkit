@@ -566,15 +566,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                       <span className="text-xs font-medium text-gray-700">
                         Assessment Questions
                       </span>
-                      <span className={`text-sm font-bold px-2 py-1 rounded-full text-white ${
-                        key === AI_MODULES.MAPPING ? 'bg-blue-500' :
-                        key === AI_MODULES.REGULATION ? 'bg-green-500' :
-                        key === AI_MODULES.RESPONSIBLE_AI ? 'bg-purple-500' :
-                        key === AI_MODULES.RISK ? 'bg-orange-500' :
-                        key === AI_MODULES.OMB_M25_21 ? 'bg-pink-500' :
-                        key === AI_MODULES.EO_14179 ? 'bg-amber-500' :
-                        'bg-blue-700'
-                      }`}>
+                      <span className="text-sm font-bold px-2 py-1 rounded-full text-white bg-blue-700">
                         {QUESTIONNAIRES[key]?.length || 0}
                       </span>
                     </div>
