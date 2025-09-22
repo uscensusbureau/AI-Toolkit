@@ -487,12 +487,11 @@ const LandingPage = ({ onLaunchDashboard }) => {
             {/* Call to Action */}
             <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 mb-8 shadow-md">
               <p className="text-lg text-gray-700 mb-4">
-                You can also evaluate your project for all compliance requirements{' '}
                 <button
                   onClick={onLaunchDashboard}
                   className="text-blue-600 hover:text-blue-800 underline font-medium cursor-pointer"
                 >
-                  here
+                  Evaluate your project for all compliance requirements
                 </button>
                 .
               </p>
