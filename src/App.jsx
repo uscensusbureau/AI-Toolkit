@@ -587,7 +587,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
             {/* Call to Action */}
             <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-xl p-8 text-center shadow-xl">
               <div className="bg-white bg-opacity-10 rounded-xl p-6 backdrop-blur-sm">
-                <h3 className="text-2xl font-bold mb-3 text-white">Ready to Get Started?</h3>
+                <h3 className="text-2xl font-bold mb-3 ">Ready to Get Started?</h3>
                 <p className="text-lg mb-6 text-gray-800">Begin your AI governance assessment and ensure compliance across your AI lifecycle.</p>
                 <button
                   onClick={onLaunchDashboard}
