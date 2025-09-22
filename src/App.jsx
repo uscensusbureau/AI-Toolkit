@@ -487,12 +487,11 @@ const LandingPage = ({ onLaunchDashboard }) => {
             {/* Call to Action */}
             <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 mb-8 shadow-md">
               <p className="text-lg text-gray-700 mb-4">
-                You can also evaluate your project for all compliance requirements{' '}
                 <button
                   onClick={onLaunchDashboard}
                   className="text-blue-600 hover:text-blue-800 underline font-medium cursor-pointer"
                 >
-                  here
+                  Evaluate your project for all compliance requirements
                 </button>
                 .
               </p>
@@ -542,22 +541,14 @@ const LandingPage = ({ onLaunchDashboard }) => {
               {Object.entries(AI_MODULES_INFO).map(([key, module]) => (
                 <div key={key} className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 shadow-md border border-gray-100">
                   <div className="flex items-center mb-4">
-                    <div className={`w-12 h-12 rounded-xl mr-3 flex items-center justify-center shadow-md ${
-                      key === AI_MODULES.MAPPING ? 'bg-gradient-to-br from-blue-400 to-blue-600' :
-                      key === AI_MODULES.REGULATION ? 'bg-gradient-to-br from-green-400 to-green-600' :
-                      key === AI_MODULES.RESPONSIBLE_AI ? 'bg-gradient-to-br from-purple-400 to-purple-600' :
-                      key === AI_MODULES.RISK ? 'bg-gradient-to-br from-orange-400 to-orange-600' :
-                      key === AI_MODULES.OMB_M25_21 ? 'bg-gradient-to-br from-pink-400 to-pink-600' :
-                      key === AI_MODULES.EO_14179 ? 'bg-gradient-to-br from-amber-400 to-amber-600' :
-                      'bg-gradient-to-br from-blue-700 to-blue-800'
-                    }`}>
-                      {key === AI_MODULES.MAPPING && <BarChart3 size={20} className="text-white" />}
-                      {key === AI_MODULES.REGULATION && <FileText size={20} className="text-white" />}
-                      {key === AI_MODULES.RESPONSIBLE_AI && <CheckCircle size={20} className="text-white" />}
-                      {key === AI_MODULES.RISK && <AlertTriangle size={20} className="text-white" />}
-                      {key === AI_MODULES.OMB_M25_21 && <Shield size={20} className="text-white" />}
-                      {key === AI_MODULES.EO_14179 && <BookOpen size={20} className="text-white" />}
-                      {key === AI_MODULES.TITLE_13 && <FileText size={20} className="text-white" />}
+                    <div style={ {backgroundColor: "#D7DAE0"}} className="w-12 h-12 rounded-xl mr-3 flex items-center justify-center shadow-md" >
+                      {key === AI_MODULES.MAPPING && <BarChart3 size={20} className="text-black" />}
+                      {key === AI_MODULES.REGULATION && <FileText size={20} className="text-black" />}
+                      {key === AI_MODULES.RESPONSIBLE_AI && <CheckCircle size={20} className="text-black" />}
+                      {key === AI_MODULES.RISK && <AlertTriangle size={20} className="text-black" />}
+                      {key === AI_MODULES.OMB_M25_21 && <Shield size={20} className="text-black" />}
+                      {key === AI_MODULES.EO_14179 && <BookOpen size={20} className="text-black" />}
+                      {key === AI_MODULES.TITLE_13 && <FileText size={20} className="text-black" />}
                     </div>
                     <h3 className="font-bold text-lg text-gray-900">{module.title}</h3>
                   </div>
@@ -567,15 +558,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                       <span className="text-xs font-medium text-gray-700">
                         Assessment Questions
                       </span>
-                      <span className={`text-sm font-bold px-2 py-1 rounded-full text-white ${
-                        key === AI_MODULES.MAPPING ? 'bg-blue-500' :
-                        key === AI_MODULES.REGULATION ? 'bg-green-500' :
-                        key === AI_MODULES.RESPONSIBLE_AI ? 'bg-purple-500' :
-                        key === AI_MODULES.RISK ? 'bg-orange-500' :
-                        key === AI_MODULES.OMB_M25_21 ? 'bg-pink-500' :
-                        key === AI_MODULES.EO_14179 ? 'bg-amber-500' :
-                        'bg-blue-700'
-                      }`}>
+                      <span className="text-sm font-bold px-2 py-1 rounded-full text-white bg-blue-700">
                         {QUESTIONNAIRES[key]?.length || 0}
                       </span>
                     </div>
@@ -587,7 +570,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
             {/* Call to Action */}
             <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-xl p-8 text-center shadow-xl">
               <div className="bg-white bg-opacity-10 rounded-xl p-6 backdrop-blur-sm">
-                <h3 className="text-2xl font-bold mb-3 text-white">Ready to Get Started?</h3>
+                <h3 className="text-2xl font-bold mb-3">Ready to Get Started?</h3>
                 <p className="text-lg mb-6 text-gray-800">Begin your AI governance assessment and ensure compliance across your AI lifecycle.</p>
                 <button
                   onClick={onLaunchDashboard}
