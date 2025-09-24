@@ -46,6 +46,35 @@ const getComplianceLevel = (percentage) => {
   return { level: 'Low Compliance', color: '#F44336', icon: <XCircle size={20} /> };
 };
 
+// Get learning tips for specific categories
+const getCategoryLearningTip = (category, module) => {
+  const tips = {
+    // OMB M-25-21 tips
+    "Documentation & Assessment Requirements": "Start with clear system documentation - it's the foundation for all other compliance activities",
+    "AI Impact Assessment (AIIA) Components": "The AIIA is your comprehensive compliance record - invest time in making it thorough",
+    "Human Oversight & Safety Mechanisms": "Human oversight isn't just a checkbox - design meaningful intervention points",
+    "Monitoring & Accountability Framework": "Continuous monitoring catches issues early - automate what you can, audit what matters",
+    "Public Transparency & Disclosure": "Transparency builds trust - communicate clearly about your AI systems' purpose and limitations",
+
+    // EO 14179 tips
+    "Ideological Bias Prevention & Technical Integrity": "Focus on objective technical metrics rather than subjective social outcomes",
+    "Strategic Alignment & National Competitiveness": "Connect your AI work to broader national objectives and document the benefits",
+    "Policy Compliance & Regulatory Efficiency": "Review and remove outdated requirements from previous executive orders",
+    "Agency Integration & Coordination": "Coordinate with your agency's overall EO 14179 implementation strategy",
+
+    // Risk Management tips
+    "Map - Contextualization": "Understanding your AI system's purpose and stakeholders is the first step in effective risk management",
+    "Measure - Risk Identification & Evaluation": "Use multiple methods to discover risks - what you don't know can hurt you",
+    "Manage - Risk Response": "Every identified risk needs an owner and a plan - avoid orphaned risks",
+    "Govern - Oversight & Accountability": "Good governance creates the structure for everything else to work",
+
+    // General tips
+    default: "Review the information guide for detailed explanations and best practices for this category"
+  };
+
+  return tips[category] || tips.default;
+};
+
 const getModelRecommendation = (answers) => {
   if (!answers || !answers[AI_MODULES.MAPPING]) return null;
 
@@ -155,23 +184,336 @@ const getRecommendations = (categoryScores, module) => {
   return moduleRecommendations[module] || "Focus on the lowest-scoring categories to improve your overall assessment.";
 };
 
+// Tooltip component for term explanations
+const ExplanationTooltip = ({ term, definition, children }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  return (
+    <div className="relative inline-block">
+      <span
+        className="border-b border-dotted border-blue-500 text-blue-600 cursor-help"
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+      >
+        {children}
+      </span>
+      {showTooltip && (
+        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-lg z-50">
+          <div className="font-medium mb-1">{term}</div>
+          <div>{definition}</div>
+          <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Policy context modal
+const PolicyModal = ({ isOpen, onClose, title, content, policyLink }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg max-w-2xl max-h-96 overflow-auto">
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-bold text-gray-900">{title}</h3>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              <XCircle size={24} />
+            </button>
+          </div>
+          <div className="text-sm text-gray-700 mb-4">
+            {content}
+          </div>
+          {policyLink && (
+            <a
+              href={policyLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm"
+            >
+              Read full policy document
+              <ArrowUpRight size={14} className="ml-1" />
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Enhanced question component with learning aids
+const EnhancedQuestion = ({ question, questionIndex, answers, activeModule, handleAnswer }) => {
+  const [showContext, setShowContext] = useState(false);
+
+  // Add contextual learning content based on question content
+  const getContextualHelp = (questionText, category) => {
+    const contexts = {
+      "Risk-Based Impact Assessment": {
+        context: "An RBIA evaluates potential AI system impacts across multiple dimensions including safety, rights, and societal effects. It's required under OMB guidance to classify systems as low, moderate, or high impact.",
+        policyLink: "https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf"
+      },
+      "Authority to Operate": {
+        context: "ATO is a formal security authorization required under FISMA for federal information systems. AI systems must complete this process to demonstrate they meet security requirements.",
+        policyLink: "https://www.nist.gov/itl/ai-risk-management-framework"
+      },
+      "AIIA": {
+        context: "The AI Impact Assessment is a comprehensive evaluation document required by OMB M-25-21 for AI systems that may impact individual rights or safety.",
+        policyLink: "https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf"
+      }
+    };
+
+    // Look for key terms in the question
+    for (const [term, info] of Object.entries(contexts)) {
+      if (questionText.includes(term) || questionText.includes(term.toUpperCase())) {
+        return info;
+      }
+    }
+    return null;
+  };
+
+  const contextHelp = getContextualHelp(question.question, question.category);
+
+  return (
+    <div className="mb-4 border rounded-lg overflow-hidden">
+      <div className="bg-gray-100 p-4">
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <h4 className="font-medium text-gray-800 mb-2">
+              {questionIndex + 1}. {question.question}
+            </h4>
+            <p className="text-sm text-gray-500">
+              Category: {question.category}
+            </p>
+          </div>
+          {contextHelp && (
+            <button
+              onClick={() => setShowContext(!showContext)}
+              className="ml-4 p-1 text-blue-500 hover:text-blue-700 hover:bg-blue-50 rounded"
+              title="Learn more about this requirement"
+            >
+              <HelpCircle size={18} />
+            </button>
+          )}
+        </div>
+
+        {/* Expandable context */}
+        {showContext && contextHelp && (
+          <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-start">
+              <Info size={16} className="text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="text-sm text-blue-800 mb-2">{contextHelp.context}</p>
+                {contextHelp.policyLink && (
+                  <a
+                    href={contextHelp.policyLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-blue-600 hover:text-blue-800 underline flex items-center"
+                  >
+                    View in policy document
+                    <ArrowUpRight size={12} className="ml-1" />
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {question.options.map((option, optIndex) => {
+            // Determine styling based on option position
+            let optionStyling = 'border-gray-300';
+            let scoreIndicator = '';
+
+            if (option === "Not Applicable" || option === "NA") {
+              optionStyling = 'border-gray-300 bg-gray-50';
+              scoreIndicator = '⚪';
+            } else if (optIndex === 0) {
+              optionStyling = 'border-green-300 bg-green-50';
+              scoreIndicator = '🟢';
+            } else if (optIndex === 1) {
+              optionStyling = 'border-blue-300 bg-blue-50';
+              scoreIndicator = '🔵';
+            } else if (optIndex === question.options.length - 1 && option !== "Not Applicable" && option !== "NA") {
+              optionStyling = 'border-red-300 bg-red-50';
+              scoreIndicator = '🔴';
+            } else {
+              optionStyling = 'border-yellow-300 bg-yellow-50';
+              scoreIndicator = '🟡';
+            }
+
+            return (
+              <button
+                key={optIndex}
+                className={`p-2 border rounded w-full text-left ${answers[activeModule][questionIndex] === option ? 'bg-blue-600 text-white border-blue-600' : optionStyling} hover:shadow-sm transition-all duration-200`}
+                onClick={() => handleAnswer(questionIndex, option)}
+              >
+                <div className="flex items-start">
+                  <span className="mr-2 text-xs">{scoreIndicator}</span>
+                  <span className="flex-1">{option}</span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Score Legend */}
+        <div className="mt-3 p-2 bg-gray-50 rounded text-xs">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="font-medium text-gray-700">Score Impact:</span>
+            <span className="flex items-center"><span className="mr-1">🟢</span>Best (High Score)</span>
+            <span className="flex items-center"><span className="mr-1">🔵🟡</span>Good/Moderate</span>
+            <span className="flex items-center"><span className="mr-1">🔴</span>Needs Improvement</span>
+            <span className="flex items-center"><span className="mr-1">⚪</span>Not Scored</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Term definitions for tooltips
+const TERM_DEFINITIONS = {
+  "RBIA": "Risk-Based Impact Assessment - A systematic evaluation to classify AI systems as low, moderate, or high impact based on potential consequences",
+  "SAOP": "Senior Agency Official for Privacy - The designated official responsible for privacy compliance and oversight within a federal agency",
+  "ATO": "Authority to Operate - A formal security authorization required under FISMA allowing a system to operate in a federal environment",
+  "FISMA": "Federal Information Security Management Act - Legislation requiring federal agencies to implement information security programs",
+  "AIIA": "AI Impact Assessment - A comprehensive evaluation document required for AI systems that may impact rights or safety",
+  "Title 13": "Federal law protecting the confidentiality of census data and restricting its use to statistical purposes only",
+  "NIST AI RMF": "National Institute of Standards and Technology AI Risk Management Framework - Guidelines for managing AI-related risks",
+  "Red-teaming": "Adversarial testing where external teams attempt to find vulnerabilities or failure modes in AI systems",
+  "Concept drift": "When the statistical properties of data change over time, potentially degrading model performance",
+  "Differential privacy": "A mathematical framework that provides privacy guarantees by adding carefully calibrated noise to data"
+};
+
+// Enhanced question text with tooltips
+const enhanceTextWithTooltips = (text) => {
+  let enhancedText = text;
+
+  Object.entries(TERM_DEFINITIONS).forEach(([term, definition]) => {
+    const regex = new RegExp(`\\b${term}\\b`, 'gi');
+    enhancedText = enhancedText.replace(regex, (match) => {
+      return `<tooltip term="${term}" definition="${definition}">${match}</tooltip>`;
+    });
+  });
+
+  return enhancedText;
+};
+
+// Specific actionable recommendations for OMB M-25-21
+const getOMBSpecificRecommendations = (lowScoreCategories) => {
+  const recommendations = [];
+
+  lowScoreCategories.forEach(category => {
+    switch(category.category) {
+      case "Documentation & Assessment Requirements":
+        recommendations.push("• Create comprehensive system documentation including intended use, objectives, and expected outcomes");
+        recommendations.push("• Conduct formal high-impact assessment using established OMB criteria and document rationale");
+        recommendations.push("• Implement systematic pre-deployment testing with documented validation procedures");
+        break;
+      case "AI Impact Assessment (AIIA) Components":
+        recommendations.push("• Develop complete AIIA including system overview, dataset documentation, and performance metrics");
+        recommendations.push("• Conduct thorough rights impact analysis focusing on privacy, civil rights, and civil liberties");
+        recommendations.push("• Document public cost-benefit analysis and independent evaluation/red-teaming activities");
+        recommendations.push("• Clearly document risk acceptance decisions and residual risk management strategies");
+        break;
+      case "Human Oversight & Safety Mechanisms":
+        recommendations.push("• Implement meaningful human oversight mechanisms with clear intervention procedures");
+        recommendations.push("• Design and test documented fail-safe mechanisms for unintended failure scenarios");
+        recommendations.push("• Establish formal appeals process with clear procedures for affected individuals");
+        break;
+      case "Monitoring & Accountability Framework":
+        recommendations.push("• Implement continuous monitoring procedures with key performance indicators and alerting");
+        recommendations.push("• Maintain comprehensive audit logs sufficient for tracing decisions and automated outputs");
+        recommendations.push("• Create public feedback mechanisms for users to submit concerns and suggestions");
+        break;
+      case "Public Transparency & Disclosure":
+        recommendations.push("• Publish AIIA or appropriate summary on agency website for public access");
+        recommendations.push("• Make ongoing monitoring results publicly available as required by OMB guidance");
+        recommendations.push("• Ensure transparency documentation is accessible and written for general audiences");
+        break;
+      default:
+        recommendations.push(`• Address gaps in ${category.category} through enhanced documentation and process improvements`);
+    }
+  });
+
+  return recommendations.join("\n");
+};
+
+
+// Specific actionable recommendations for EO 14179
+const getEOSpecificRecommendations = (lowScoreCategories) => {
+  const recommendations = [];
+
+  lowScoreCategories.forEach(category => {
+    switch(category.category) {
+      case "Ideological Bias Prevention & Technical Integrity":
+        recommendations.push("• Conduct objective technical evaluation focusing on performance metrics rather than social engineering");
+        recommendations.push("• Document bias testing methodology that aligns with technical risks and empirical evidence");
+        recommendations.push("• Implement fairness testing based on objective performance criteria rather than ideological frameworks");
+        recommendations.push("• Ensure all safety assessments focus on technical risks without imposing extraneous social constraints");
+        break;
+      case "Strategic Alignment & National Competitiveness":
+        recommendations.push("• Document clear linkage between AI system and national objectives (human flourishing, economic competitiveness, national security)");
+        recommendations.push("• Align technical evaluations with fostering U.S. leadership in safe, trustworthy AI development");
+        recommendations.push("• Create explicit documentation showing contribution to U.S. global AI leadership under National AI Strategy");
+        recommendations.push("• Establish metrics showing intended benefit to U.S. competitiveness or security");
+        break;
+      case "Policy Compliance & Regulatory Efficiency":
+        recommendations.push("• Review and remove any legacy policies from EO 14110 that conflict with EO 14179 requirements");
+        recommendations.push("• Update documentation to comply with revised OMB M-24-10 and related EO 14179 guidance");
+        recommendations.push("• Reassess risk classifications and waivers under new OMB guidance framework");
+        recommendations.push("• Streamline development and procurement processes to accelerate AI adoption per EO priorities");
+        recommendations.push("• Remove undue regulatory barriers that slow implementation inconsistent with EO 14179");
+        break;
+      case "Transparency & Documentation Standards":
+        recommendations.push("• Maintain comprehensive records suitable for potential public disclosure of decision processes");
+        recommendations.push("• Implement comprehensive audit logs and provenance tracking for all AI processing and outputs");
+        recommendations.push("• Create and maintain central compliance file for the system under EO 14179 requirements");
+        break;
+      case "Appeals & Redress Mechanisms":
+        recommendations.push("• Establish formal appeals and redress process for individuals affected by AI-driven decisions");
+        recommendations.push("• Ensure redress mechanisms are accessible and provide meaningful opportunities for relief");
+        recommendations.push("• Document clear procedures and timelines for appeal resolution");
+        break;
+      case "Agency Integration & Coordination":
+        recommendations.push("• Coordinate compliance activities with agency-wide EO 14179 policy implementation");
+        recommendations.push("• Include system in comprehensive agency compliance portfolio under EO 14179");
+        recommendations.push("• Update system to align with revised agency standards post-EO 14179");
+        recommendations.push("• Make clear lifecycle decisions (continue, revise, phase out) under EO 14179 framework");
+        break;
+      default:
+        recommendations.push(`• Address compliance gaps in ${category.category} through systematic policy alignment with EO 14179`);
+    }
+  });
+
+  return recommendations.join("\n");
+};
+
+
 // Landing Page Component
 const LandingPage = ({ onLaunchDashboard }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white shadow-lg">
+      <div className="bg-white shadow">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mr-3 flex items-center justify-center shadow-md">
+              <div className="w-10 h-10 bg-blue-600 rounded-lg mr-3 flex items-center justify-center shadow">
                 <Home className="text-white" size={20} />
               </div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">AI Governance Toolkit</h1>
+              <h1 className="text-2xl font-bold text-gray-800">AI Governance Toolkit</h1>
             </div>
             <button
               onClick={onLaunchDashboard}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 cursor-pointer text-white px-6 py-2 rounded-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-200"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium shadow transform hover:scale-105 transition-all duration-200"
             >
               Launch Dashboard →
             </button>
@@ -184,54 +526,54 @@ const LandingPage = ({ onLaunchDashboard }) => {
         <div className="space-y-12">
 
           {/* Overview Section */}
-          <section className="bg-white rounded-xl shadow-lg p-8">
+          <section className="bg-white rounded-lg shadow p-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="pr-6">
-                <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 mb-6 shadow-md">
+                <div className="bg-blue-50 rounded-lg p-6 mb-6 shadow-sm">
                   <h1 className="text-3xl font-bold text-gray-900 mb-3">AI Governance Toolkit</h1>
                   <p className="text-gray-600 mb-6 text-lg">Comprehensive AI System Assessment & Compliance Platform</p>
                   <button
                     onClick={onLaunchDashboard}
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 cursor-pointer text-white px-6 py-3 rounded-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-200"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium shadow transform hover:scale-105 transition-all duration-200"
                   >
                     Launch Dashboard →
                   </button>
                 </div>
 
                 {/* Goals */}
-                <div className="bg-gradient-to-br from-blue-50 to-purple-50 text-white rounded-xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-4 flex items-center text-gray-800">
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 bg-opacity-20 rounded-lg mr-3 flex items-center justify-center">
-                      <Target className="text-white" size={16} />
+                <div className="bg-gray-50 rounded-lg p-6 shadow">
+                  <h3 className="text-xl font-bold mb-4 flex items-center text-gray-900">
+                    <div className="w-8 h-8 bg-gray-200 rounded-lg mr-3 flex items-center justify-center">
+                      <Target size={16} className="text-gray-600" />
                     </div>
                     Toolkit Goals
                   </h3>
                   <div className="space-y-4">
-                    <div className="flex items-start p-3 bg-white bg-opacity-10 rounded-lg">
+                    <div className="flex items-start p-3 bg-white rounded-lg shadow-sm">
                       <div className="w-10 h-10 bg-blue-500 rounded-lg mr-3 flex items-center justify-center flex-shrink-0">
                         <Target size={16} className="text-white" />
                       </div>
                       <div>
-                        <span className="font-semibold block mb-1 text-gray-800">Assess & Gauge Compliance</span>
-                        <p className="text-sm text-gray-800">Comprehensive modules for compliance assessment across AI governance areas</p>
+                        <span className="font-semibold block mb-1 text-gray-900">Assess & Gauge Compliance</span>
+                        <p className="text-sm text-gray-600">Comprehensive modules for compliance assessment across AI governance areas</p>
                       </div>
                     </div>
-                    <div className="flex items-start p-3 bg-white bg-opacity-10 rounded-lg">
-                      <div className="w-10 h-10 bg-purple-500 rounded-lg mr-3 flex items-center justify-center flex-shrink-0">
+                    <div className="flex items-start p-3 bg-white rounded-lg shadow-sm">
+                      <div className="w-10 h-10 bg-blue-600 rounded-lg mr-3 flex items-center justify-center flex-shrink-0">
                         <Lightbulb size={16} className="text-white" />
                       </div>
                       <div>
-                        <span className="font-semibold block mb-1 text-gray-800">Receive Recommendations</span>
-                        <p className="text-sm text-gray-800">Detailed assessments and actionable recommendations for your AI systems</p>
+                        <span className="font-semibold block mb-1 text-gray-900">Receive Recommendations</span>
+                        <p className="text-sm text-gray-600">Detailed assessments and actionable recommendations for your AI systems</p>
                       </div>
                     </div>
-                    <div className="flex items-start p-3 bg-white bg-opacity-10 rounded-lg">
-                      <div className="w-10 h-10 bg-green-500 rounded-lg mr-3 flex items-center justify-center flex-shrink-0">
+                    <div className="flex items-start p-3 bg-white rounded-lg shadow-sm">
+                      <div className="w-10 h-10 bg-blue-600 rounded-lg mr-3 flex items-center justify-center flex-shrink-0">
                         <Download size={16} className="text-white" />
                       </div>
                       <div>
-                        <span className="font-semibold block mb-1 text-gray-800">Download Artifacts</span>
-                        <p className="text-sm text-gray-800">Generate compliance artifacts for documentation and reporting</p>
+                        <span className="font-semibold block mb-1 text-gray-900">Download Artifacts</span>
+                        <p className="text-sm text-gray-600">Generate compliance artifacts for documentation and reporting</p>
                       </div>
                     </div>
                   </div>
@@ -239,12 +581,12 @@ const LandingPage = ({ onLaunchDashboard }) => {
               </div>
 
               <div className="pl-2">
-                <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6 h-full shadow-md">
+                <div className="bg-gray-50 rounded-lg p-6 h-full shadow-sm">
                   <h2 className="text-2xl font-bold mb-4 text-gray-900">Who is this toolkit for?</h2>
 
                   <div className="bg-white rounded-lg p-4 mb-4 shadow-sm">
                     <div className="flex items-center mb-3">
-                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg mr-3 flex items-center justify-center">
+                      <div className="w-8 h-8 bg-blue-600 rounded-lg mr-3 flex items-center justify-center">
                         <Users size={16} className="text-white" />
                       </div>
                       <h3 className="text-lg font-bold text-gray-900">AI Lifecycle Actors</h3>
@@ -252,7 +594,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                     <p className="text-sm text-gray-600 mb-4">Designed for actors across the design, development, deployment, and evaluation phases of the AI lifecycle.</p>
 
                     <div className="space-y-4">
-                      <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4 shadow-sm">
+                      <div className="bg-blue-50 rounded-lg p-4 shadow-sm">
                         <h4 className="font-bold text-blue-700 mb-2 flex items-center">
                           <div className="w-6 h-6 bg-blue-500 rounded-full mr-2 flex items-center justify-center text-white text-xs font-bold">1</div>
                           Practitioners Assessing Risk & Compliance
@@ -264,15 +606,15 @@ const LandingPage = ({ onLaunchDashboard }) => {
                         </div>
                       </div>
 
-                      <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4 shadow-sm">
-                        <h4 className="font-bold text-green-700 mb-2 flex items-center">
-                          <div className="w-6 h-6 bg-green-500 rounded-full mr-2 flex items-center justify-center text-white text-xs font-bold">2</div>
+                      <div className="bg-gray-50 rounded-lg p-4 shadow-sm">
+                        <h4 className="font-bold text-gray-700 mb-2 flex items-center">
+                          <div className="w-6 h-6 bg-gray-500 rounded-full mr-2 flex items-center justify-center text-white text-xs font-bold">2</div>
                           Agencies Building a Toolkit
                         </h4>
                         <div className="text-sm space-y-1 text-gray-700">
-                          <div className="flex items-start"><span className="text-green-500 mr-2">•</span><span>Utilize all or parts of our toolkit and questionnaires as resources</span></div>
-                          <div className="flex items-start"><span className="text-green-500 mr-2">•</span><span>Customize and implement for your specific organizational needs</span></div>
-                          <div className="flex items-start"><span className="text-green-500 mr-2">•</span><span>Use modules individually or as a complete assessment suite</span></div>
+                          <div className="flex items-start"><span className="text-gray-500 mr-2">•</span><span>Utilize all or parts of our toolkit and questionnaires as resources</span></div>
+                          <div className="flex items-start"><span className="text-gray-500 mr-2">•</span><span>Customize and implement for your specific organizational needs</span></div>
+                          <div className="flex items-start"><span className="text-gray-500 mr-2">•</span><span>Use modules individually or as a complete assessment suite</span></div>
                         </div>
                       </div>
                     </div>
@@ -282,41 +624,89 @@ const LandingPage = ({ onLaunchDashboard }) => {
             </div>
           </section>
 
+          {/* Available Assessment Modules Section */}
+          <section className="bg-white rounded-lg shadow p-8">
+            <h2 className="text-3xl font-bold mb-6 text-blue-600">Available Assessment Modules</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {Object.entries(AI_MODULES_INFO).map(([key, module]) => (
+                <div key={key} className="bg-white rounded-lg p-6 shadow hover:shadow-md transform hover:scale-105 transition-all duration-200 border border-gray-100">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-blue-600 rounded-lg mr-3 flex items-center justify-center shadow-sm">
+                      {key === AI_MODULES.MAPPING && <BarChart3 size={20} className="text-white" />}
+                      {key === AI_MODULES.REGULATION && <FileText size={20} className="text-white" />}
+                      {key === AI_MODULES.RESPONSIBLE_AI && <CheckCircle size={20} className="text-white" />}
+                      {key === AI_MODULES.RISK && <AlertTriangle size={20} className="text-white" />}
+                      {key === AI_MODULES.OMB_M25_21 && <Shield size={20} className="text-white" />}
+                      {key === AI_MODULES.EO_14179 && <BookOpen size={20} className="text-white" />}
+                      {key === AI_MODULES.TITLE_13 && <FileText size={20} className="text-white" />}
+                    </div>
+                    <h3 className="font-bold text-lg text-gray-900">{module.title}</h3>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-4 leading-relaxed">{module.description}</p>
+                  <div className="bg-gray-100 rounded-lg p-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium text-gray-700">
+                        Assessment Questions
+                      </span>
+                      <span className="text-sm font-bold px-2 py-1 rounded-full text-white bg-blue-500">
+                        {QUESTIONNAIRES[key]?.length || 0}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Call to Action */}
+            <div className="bg-blue-600 rounded-lg p-8 text-center shadow">
+              <div className="bg-white bg-opacity-10 rounded-lg p-6 backdrop-blur-sm">
+                <h3 className="text-2xl font-bold mb-3">Ready to Get Started?</h3>
+                <p className="text-lg mb-6 text-gray-600">Begin your AI governance assessment and ensure compliance across your AI lifecycle.</p>
+                <button
+                  onClick={onLaunchDashboard}
+                  className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-bold text-lg shadow transform hover:scale-105 transition-all duration-200"
+                >
+                  Launch Assessment Dashboard
+                </button>
+              </div>
+            </div>
+          </section>
+
           {/* Quick Start Guide Section */}
-          <section className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Quick Start Guide</h2>
+          <section className="bg-white rounded-lg shadow p-8">
+            <h2 className="text-3xl font-bold mb-6 text-blue-600">Quick Start Guide</h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* How to Use */}
-              <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 shadow-md">
+              <div className="bg-blue-50 rounded-lg p-6 shadow-sm">
                 <h3 className="text-xl font-bold text-blue-700 mb-6 flex items-center">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg mr-3 flex items-center justify-center">
+                  <div className="w-8 h-8 bg-blue-600 rounded-lg mr-3 flex items-center justify-center">
                     <HelpCircle size={16} className="text-white" />
                   </div>
                   3-Step Process
                 </h3>
                 <div className="space-y-6">
-                  <div className="bg-white rounded-xl p-6 shadow-md transition-all duration-200">
+                  <div className="bg-white rounded-lg p-6 shadow-sm transform hover:scale-105 transition-all duration-200">
                     <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mr-4 flex items-center justify-center shadow-lg">
+                      <div className="w-12 h-12 bg-blue-600 rounded-full mr-4 flex items-center justify-center shadow">
                         <span className="font-bold text-white text-lg">1</span>
                       </div>
                       <h4 className="text-lg font-bold text-gray-900">Choose Your Module</h4>
                     </div>
                     <p className="text-gray-600">Select which compliance area you want to assess first from our comprehensive module library</p>
                   </div>
-                  <div className="bg-white rounded-xl p-6 shadow-md transition-all duration-200">
+                  <div className="bg-white rounded-lg p-6 shadow-sm transform hover:scale-105 transition-all duration-200">
                     <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full mr-4 flex items-center justify-center shadow-lg">
+                      <div className="w-12 h-12 bg-blue-600 rounded-full mr-4 flex items-center justify-center shadow">
                         <span className="font-bold text-white text-lg">2</span>
                       </div>
                       <h4 className="text-lg font-bold text-gray-900">Answer Questions</h4>
                     </div>
                     <p className="text-gray-600">Complete the assessment questionnaire with guided questions tailored to your selected module</p>
                   </div>
-                  <div className="bg-white rounded-xl p-6 shadow-md transition-all duration-200">
+                  <div className="bg-white rounded-lg p-6 shadow-sm transform hover:scale-105 transition-all duration-200">
                     <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full mr-4 flex items-center justify-center shadow-lg">
+                      <div className="w-12 h-12 bg-blue-600 rounded-full mr-4 flex items-center justify-center shadow">
                         <span className="font-bold text-white text-lg">3</span>
                       </div>
                       <h4 className="text-lg font-bold text-gray-900">Get Results</h4>
@@ -328,7 +718,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                 <div className="mt-8 text-center">
                   <button
                     onClick={onLaunchDashboard}
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 cursor-pointer text-white px-8 py-3 rounded-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-200"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium shadow transform hover:scale-105 transition-all duration-200"
                   >
                     Start Assessment →
                   </button>
@@ -336,17 +726,17 @@ const LandingPage = ({ onLaunchDashboard }) => {
               </div>
 
               {/* Usage Types */}
-              <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6 shadow-md">
-                <h3 className="text-xl font-bold text-green-700 mb-6 flex items-center">
-                  <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg mr-3 flex items-center justify-center">
+              <div className="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <h3 className="text-xl font-bold text-gray-700 mb-6 flex items-center">
+                  <div className="w-8 h-8 bg-gray-600 rounded-lg mr-3 flex items-center justify-center">
                     <Settings size={16} className="text-white" />
                   </div>
                   Flexible Usage
                 </h3>
                 <div className="space-y-4">
-                  <div className="bg-white rounded-lg p-4 shadow-sm transition-shadow duration-200">
+                  <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <div className="flex items-start">
-                      <div className="w-6 h-6 bg-gradient-to-br from-green-400 to-green-600 rounded-full mr-3 mt-1 flex items-center justify-center">
+                      <div className="w-6 h-6 bg-blue-600 rounded-full mr-3 mt-1 flex items-center justify-center">
                         <CheckCircle size={12} className="text-white" />
                       </div>
                       <div>
@@ -355,9 +745,9 @@ const LandingPage = ({ onLaunchDashboard }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-white rounded-lg p-4 shadow-sm transition-shadow duration-200">
+                  <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <div className="flex items-start">
-                      <div className="w-6 h-6 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mr-3 mt-1 flex items-center justify-center">
+                      <div className="w-6 h-6 bg-blue-600 rounded-full mr-3 mt-1 flex items-center justify-center">
                         <CheckCircle size={12} className="text-white" />
                       </div>
                       <div>
@@ -366,9 +756,9 @@ const LandingPage = ({ onLaunchDashboard }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-white rounded-lg p-4 shadow-sm transition-shadow duration-200">
+                  <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <div className="flex items-start">
-                      <div className="w-6 h-6 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full mr-3 mt-1 flex items-center justify-center">
+                      <div className="w-6 h-6 bg-blue-600 rounded-full mr-3 mt-1 flex items-center justify-center">
                         <CheckCircle size={12} className="text-white" />
                       </div>
                       <div>
@@ -401,13 +791,13 @@ const LandingPage = ({ onLaunchDashboard }) => {
           </section>
 
           {/* AI Development Lifecycle Section */}
-          <section className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">AI Development Lifecycle</h2>
+          <section className="bg-white rounded-lg shadow p-8">
+            <h2 className="text-3xl font-bold mb-6 text-blue-600">AI Development Lifecycle</h2>
 
             {/* Phase Selection Guide */}
-            <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6 mb-8 shadow-md">
+            <div className="bg-gray-50 rounded-lg p-6 mb-8 shadow-sm">
               <div className="flex items-center mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg mr-3 flex items-center justify-center">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg mr-3 flex items-center justify-center">
                   <Target size={16} className="text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900">Select Your Project's Phase</h3>
@@ -418,17 +808,17 @@ const LandingPage = ({ onLaunchDashboard }) => {
             </div>
 
             {/* Development Phases */}
-            <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-6 mb-8 shadow-md">
+            <div className="bg-gray-50 rounded-lg p-6 mb-8 shadow-sm">
               <h3 className="text-xl font-bold mb-6 text-gray-900 flex items-center">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg mr-3 flex items-center justify-center">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg mr-3 flex items-center justify-center">
                   <ArrowRight size={16} className="text-white" />
                 </div>
                 Module Usage by Development Phase
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                <div className="bg-gradient-to-br from-orange-100 to-orange-200 rounded-lg p-4 shadow-md transform transition-all duration-200">
-                  <div className="border-l-4 border-orange-500 pl-3 mb-3">
-                    <h4 className="font-bold text-orange-700 text-sm">Planning</h4>
+                <div className="bg-blue-50 rounded-lg p-4 shadow-sm transform hover:scale-105 transition-all duration-200">
+                  <div className="border-l-4 border-blue-500 pl-3 mb-3">
+                    <h4 className="font-bold text-blue-700 text-sm">Planning</h4>
                     <p className="text-xs text-gray-600">Application Context</p>
                   </div>
                   <div className="space-y-2">
@@ -437,7 +827,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg p-4 shadow-md transform transition-all duration-200">
+                <div className="bg-blue-50 rounded-lg p-4 shadow-sm transform hover:scale-105 transition-all duration-200">
                   <div className="border-l-4 border-blue-500 pl-3 mb-3">
                     <h4 className="font-bold text-blue-700 text-sm">Data Collection</h4>
                     <p className="text-xs text-gray-600">Data & Input</p>
@@ -448,9 +838,9 @@ const LandingPage = ({ onLaunchDashboard }) => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-green-100 to-green-200 rounded-lg p-4 shadow-md transform transition-all duration-200">
-                  <div className="border-l-4 border-green-500 pl-3 mb-3">
-                    <h4 className="font-bold text-green-700 text-sm">Model Build</h4>
+                <div className="bg-blue-50 rounded-lg p-4 shadow-sm transform hover:scale-105 transition-all duration-200">
+                  <div className="border-l-4 border-blue-500 pl-3 mb-3">
+                    <h4 className="font-bold text-blue-700 text-sm">Model Build</h4>
                     <p className="text-xs text-gray-600">AI Model Development</p>
                   </div>
                   <div className="space-y-2">
@@ -459,9 +849,9 @@ const LandingPage = ({ onLaunchDashboard }) => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-lg p-4 shadow-md transform transition-all duration-200">
-                  <div className="border-l-4 border-emerald-600 pl-3 mb-3">
-                    <h4 className="font-bold text-emerald-700 text-sm">Validation</h4>
+                <div className="bg-blue-50 rounded-lg p-4 shadow-sm transform hover:scale-105 transition-all duration-200">
+                  <div className="border-l-4 border-blue-500 pl-3 mb-3">
+                    <h4 className="font-bold text-blue-700 text-sm">Validation</h4>
                     <p className="text-xs text-gray-600">Verify & Validate</p>
                   </div>
                   <div className="space-y-1">
@@ -471,9 +861,9 @@ const LandingPage = ({ onLaunchDashboard }) => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg p-4 shadow-md transform transition-all duration-200">
-                  <div className="border-l-4 border-purple-500 pl-3 mb-3">
-                    <h4 className="font-bold text-purple-700 text-sm">Deployment</h4>
+                <div className="bg-blue-50 rounded-lg p-4 shadow-sm transform hover:scale-105 transition-all duration-200">
+                  <div className="border-l-4 border-blue-500 pl-3 mb-3">
+                    <h4 className="font-bold text-blue-700 text-sm">Deployment</h4>
                     <p className="text-xs text-gray-600">Task & Output</p>
                   </div>
                   <div className="space-y-2">
@@ -485,23 +875,22 @@ const LandingPage = ({ onLaunchDashboard }) => {
             </div>
 
             {/* Call to Action */}
-            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 mb-8 shadow-md">
+            <div className="bg-blue-50 rounded-lg p-6 mb-8 shadow-sm">
               <p className="text-lg text-gray-700 mb-4">
                 <button
                   onClick={onLaunchDashboard}
-                  className="text-blue-600 hover:text-blue-800 underline font-medium cursor-pointer"
+                  className="text-blue-600 hover:text-blue-800 underline font-medium"
                 >
                   Evaluate your project for all compliance requirements
                 </button>
-                .
               </p>
             </div>
 
             {/* Compliance Requirements */}
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl p-6 shadow-md transition-shadow duration-200">
+              <div className="bg-blue-50 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-500 rounded-lg mr-3 flex items-center justify-center shadow-md">
+                  <div className="w-10 h-10 bg-blue-600 rounded-lg mr-3 flex items-center justify-center shadow-sm">
                     <Shield size={18} className="text-white" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900">OMB M-25-21 Compliance</h3>
@@ -515,9 +904,9 @@ const LandingPage = ({ onLaunchDashboard }) => {
                   </div>
                 </div>
               </div>
-              <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 shadow-md transition-shadow duration-200">
+              <div className="bg-gray-50 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg mr-3 flex items-center justify-center shadow-md">
+                  <div className="w-10 h-10 bg-gray-600 rounded-lg mr-3 flex items-center justify-center shadow-sm">
                     <BookOpen size={18} className="text-white" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900">EO 14179 Compliance</h3>
@@ -581,7 +970,6 @@ const LandingPage = ({ onLaunchDashboard }) => {
               </div>
             </div>
           </section>
-
         </div>
       </div>
     </div>
