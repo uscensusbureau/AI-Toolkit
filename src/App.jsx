@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
-import { Info, CheckCircle, AlertTriangle, XCircle, HelpCircle, ChevronDown, ChevronRight, BarChart3, FileText, Shield, BookOpen, Home, Target, Lightbulb, Users, Settings, Download, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Info, CheckCircle, AlertTriangle, XCircle, HelpCircle, ChevronDown, ChevronRight, BarChart3, FileText, Home, Settings, Download, ArrowLeft, ArrowRight, Shield, BookOpen, Users, Target, Lightbulb, ArrowUpRight } from 'lucide-react';
 
 import AI_MODULES from './data/modules'
 import AI_MODULES_INFO from './data/modules-info'
@@ -355,7 +355,7 @@ const EnhancedQuestion = ({ question, questionIndex, answers, activeModule, hand
                 onClick={() => handleAnswer(questionIndex, option)}
               >
                 <div className="flex items-start">
-                  <span className="mr-2 text-xs">{scoreIndicator}</span>
+                  <span className="mr-2 text-xs mt-1">{scoreIndicator}</span>
                   <span className="flex-1">{option}</span>
                 </div>
               </button>
@@ -661,7 +661,7 @@ const LandingPage = ({ onLaunchDashboard }) => {
             <div className="bg-blue-600 rounded-lg p-8 text-center shadow">
               <div className="bg-white bg-opacity-10 rounded-lg p-6 backdrop-blur-sm">
                 <h3 className="text-2xl font-bold mb-3">Ready to Get Started?</h3>
-                <p className="text-lg mb-6 text-gray-600">Begin your AI governance assessment and ensure compliance across your AI lifecycle.</p>
+                <p className="text-lg mb-6 text-gray-700">Begin your AI governance assessment and ensure compliance across your AI lifecycle.</p>
                 <button
                   onClick={onLaunchDashboard}
                   className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-bold text-lg shadow transform hover:scale-105 transition-all duration-200"
@@ -876,10 +876,10 @@ const LandingPage = ({ onLaunchDashboard }) => {
 
             {/* Call to Action */}
             <div className="bg-blue-50 rounded-lg p-6 mb-8 shadow-sm">
-              <p className="text-lg text-gray-700 mb-4">
+              <p className="text-lg text-gray-700">
                 <button
                   onClick={onLaunchDashboard}
-                  className="text-blue-600 hover:text-blue-800 underline font-medium"
+                  className="text-blue-700 hover:text-blue-900 underline font-medium"
                 >
                   Evaluate your project for all compliance requirements
                 </button>
@@ -922,59 +922,12 @@ const LandingPage = ({ onLaunchDashboard }) => {
               </div>
             </div>
           </section>
-
-          {/* Available Assessment Modules Section */}
-          <section className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Available Assessment Modules</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {Object.entries(AI_MODULES_INFO).map(([key, module]) => (
-                <div key={key} className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 shadow-md border border-gray-100">
-                  <div className="flex items-center mb-4">
-                    <div style={ {backgroundColor: "#D7DAE0"}} className="w-12 h-12 rounded-xl mr-3 flex items-center justify-center shadow-md" >
-                      {key === AI_MODULES.MAPPING && <BarChart3 size={20} className="text-black" />}
-                      {key === AI_MODULES.REGULATION && <FileText size={20} className="text-black" />}
-                      {key === AI_MODULES.RESPONSIBLE_AI && <CheckCircle size={20} className="text-black" />}
-                      {key === AI_MODULES.RISK && <AlertTriangle size={20} className="text-black" />}
-                      {key === AI_MODULES.OMB_M25_21 && <Shield size={20} className="text-black" />}
-                      {key === AI_MODULES.EO_14179 && <BookOpen size={20} className="text-black" />}
-                      {key === AI_MODULES.TITLE_13 && <FileText size={20} className="text-black" />}
-                    </div>
-                    <h3 className="font-bold text-lg text-gray-900">{module.title}</h3>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-4 leading-relaxed">{module.description}</p>
-                  <div className="bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg p-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-medium text-gray-700">
-                        Assessment Questions
-                      </span>
-                      <span className="text-sm font-bold px-2 py-1 rounded-full text-white bg-blue-700">
-                        {QUESTIONNAIRES[key]?.length || 0}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Call to Action */}
-            <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-xl p-8 text-center shadow-xl">
-              <div className="bg-white bg-opacity-10 rounded-xl p-6 backdrop-blur-sm">
-                <h3 className="text-2xl font-bold mb-3">Ready to Get Started?</h3>
-                <p className="text-lg mb-6 text-gray-800">Begin your AI governance assessment and ensure compliance across your AI lifecycle.</p>
-                <button
-                  onClick={onLaunchDashboard}
-                  className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg cursor-pointer font-bold text-lg shadow-lg transform hover:scale-105 transition-all duration-200"
-                >
-                  Launch Assessment Dashboard
-                </button>
-              </div>
-            </div>
-          </section>
         </div>
       </div>
     </div>
   );
 };
+
 
 // Main Dashboard Component
 const Dashboard = () => {
@@ -1083,7 +1036,6 @@ const Dashboard = () => {
           recommendedModels: modelRec.recommendations || [],
           pythonLibraries: modelRec.libraries || null
         };
-        delete results.complianceLevel; // Remove compliance level for mapping module
       }
     }
 
@@ -1147,7 +1099,7 @@ const Dashboard = () => {
           <div className="flex items-center">
             <button
               onClick={() => setShowLandingPage(true)}
-              className="mr-4 p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+              className="mr-4 p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
               title="Back to Home"
             >
               <Home size={20} />
@@ -1177,7 +1129,7 @@ const Dashboard = () => {
                 <h2 className="text-xl font-medium">Modules</h2>
                 <button
                   onClick={() => setShowLandingPage(true)}
-                  className="flex items-center text-sm px-3 py-1 text-blue-600 hover:bg-blue-50 cursor-pointer rounded-lg transition-colors"
+                  className="flex items-center text-sm px-3 py-1 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                   title="Back to Home"
                 >
                   <Home size={16} className="mr-1" />
@@ -1320,7 +1272,7 @@ const Dashboard = () => {
               {progress.answered > 0 && (
                 <div className="mt-4">
                   <button
-                    className="w-full bg-blue-600 hover:bg-blue-700 cursor-pointer text-white py-2 rounded flex items-center justify-center"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded flex items-center justify-center"
                     onClick={() => setShowResults(true)}
                   >
                     <BarChart3 size={16} className="mr-2" />
@@ -1338,13 +1290,13 @@ const Dashboard = () => {
                 <h2 className="text-xl font-medium">{AI_MODULES_INFO[activeModule].title}</h2>
                 <div>
                   <button
-                    className={`cursor-pointer mr-2 ${moduleView === 'questionnaire' ? 'bg-blue-600 text-white' : 'bg-gray-200'} px-3 py-1 rounded`}
+                    className={`mr-2 ${moduleView === 'questionnaire' ? 'bg-blue-600 text-white' : 'bg-gray-200'} px-3 py-1 rounded`}
                     onClick={() => setModuleView('questionnaire')}
                   >
                     Questionnaire
                   </button>
                   <button
-                    className={`cursor-pointer ${moduleView === 'guide' ? 'bg-blue-600 text-white' : 'bg-gray-200'} px-3 py-1 rounded`}
+                    className={`${moduleView === 'guide' ? 'bg-blue-600 text-white' : 'bg-gray-200'} px-3 py-1 rounded`}
                     onClick={() => setModuleView('guide')}
                   >
                     Information Guide
@@ -1353,7 +1305,7 @@ const Dashboard = () => {
               </div>
 
               <div className="p-4 bg-blue-50 mb-4 flex items-start">
-                <HelpCircle size={20} className="mr-2 text-blue-500 mt-1" />
+                <HelpCircle size={20} className="mr-2 text-blue-500" />
                 <p className="text-sm">
                   {AI_MODULES_INFO[activeModule].description}
                 </p>
@@ -1362,6 +1314,78 @@ const Dashboard = () => {
               {moduleView === 'questionnaire' ? (
                 <div className="p-4">
                   <h3 className="text-lg mb-4">{AI_MODULES_INFO[activeModule].questTitle}</h3>
+
+                  <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div className="flex items-start">
+                      <Info size={20} className="mr-3 text-blue-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm text-blue-700 font-medium mb-1">📖 Need help with terminology or concepts?</p>
+                        <p className="text-sm text-blue-600">
+                          Review the <button
+                            className="underline font-medium hover:text-blue-800"
+                            onClick={() => setModuleView('guide')}
+                          >Information Guide</button> tab above for detailed explanations of terms, requirements, and best practices before completing the questionnaire.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Learning Mode Toggle */}
+                  <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <Lightbulb size={20} className="mr-2 text-green-600" />
+                        <span className="text-sm font-medium text-green-800">Interactive Learning Mode</span>
+                      </div>
+                      <span className="text-xs text-green-600 bg-green-100 px-2 py-1 rounded">Always On</span>
+                    </div>
+                    <div className="text-xs text-green-700 mt-1">
+                      Look for <HelpCircle size={12} className="inline mx-1" /> icons to explore policy context, hover over <Tooltip term="Example Term" definition="This is how tooltips work">underlined terms</Tooltip> for definitions, and discover learning aids throughout your assessment.
+                    </div>
+                  </div>
+                  {(activeModule === AI_MODULES.RISK || activeModule === AI_MODULES.EO_14179 || activeModule === AI_MODULES.OMB_M25_21) && (
+                    <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                      <div className="flex items-start">
+                        <BookOpen size={20} className="mr-3 text-gray-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-sm text-gray-700 font-medium mb-2">📄 Reference Documents:</p>
+                          {activeModule === AI_MODULES.RISK && (
+                            <a
+                              href="https://www.nist.gov/itl/ai-risk-management-framework"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm text-blue-600 hover:text-blue-800 underline flex items-center"
+                            >
+                              NIST AI Risk Management Framework (AI RMF 1.0)
+                              <ArrowUpRight size={14} className="ml-1" />
+                            </a>
+                          )}
+                          {activeModule === AI_MODULES.EO_14179 && (
+                            <a
+                              href="https://www.federalregister.gov/documents/2025/01/31/2025-02172/removing-barriers-to-american-leadership-in-artificial-intelligence"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm text-blue-600 hover:text-blue-800 underline flex items-center"
+                            >
+                              Executive Order 14179: Removing Barriers to American Leadership in Artificial Intelligence
+                              <ArrowUpRight size={14} className="ml-1" />
+                            </a>
+                          )}
+                          {activeModule === AI_MODULES.OMB_M25_21 && (
+                            <a
+                              href="https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm text-blue-600 hover:text-blue-800 underline flex items-center"
+                            >
+                              OMB Memorandum M-25-21: Accelerating Federal Use of AI through Innovation, Governance, and Public Trust
+                              <ArrowUpRight size={14} className="ml-1" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {!showResults ? (
                     <>
@@ -1384,7 +1408,7 @@ const Dashboard = () => {
                           </div>
                           <div className="ml-4">
                             <button
-                              className="bg-red-500 hover:bg-red-600 cursor-pointer text-white text-sm px-3 py-1 rounded shadow-sm"
+                              className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded shadow-sm"
                               onClick={resetQuestionnaire}
                               title="Reset all answers"
                             >
@@ -1392,40 +1416,35 @@ const Dashboard = () => {
                             </button>
                           </div>
                         </div>
+
+                        {/* Scoring Tip */}
+                        <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded">
+                          <div className="flex items-start">
+                            <Info size={16} className="text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+                            <div className="text-xs text-blue-700">
+                              <span className="font-medium">Scoring Tip:</span> First options typically indicate best practices and full compliance (highest scores), while later options show areas needing improvement (lower scores). "Not Applicable" responses don't affect your score.
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                       {currentQuestions.map((q, index) => {
                         const absoluteIndex = currentPage * questionsPerPage + index;
                         return (
-                          <div key={absoluteIndex} className="mb-4 border rounded-lg overflow-hidden">
-                            <div className="bg-gray-100 p-4">
-                              <h4 className="font-medium text-gray-800">
-                                {absoluteIndex + 1}. {q.question}
-                              </h4>
-                              <p className="text-sm text-gray-500">
-                                Category: {q.category}
-                              </p>
-                            </div>
-                            <div className="p-4">
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                {q.options.map((option, optIndex) => (
-                                  <button
-                                    key={optIndex}
-                                    className={`cursor-pointer p-2 border rounded w-full ${answers[activeModule][absoluteIndex] === option ? 'bg-blue-600 text-white' : 'border-gray-300'}`}
-                                    onClick={() => handleAnswer(absoluteIndex, option)}
-                                  >
-                                    {option}
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
+                          <EnhancedQuestion
+                            key={absoluteIndex}
+                            question={q}
+                            questionIndex={absoluteIndex}
+                            answers={answers}
+                            activeModule={activeModule}
+                            handleAnswer={handleAnswer}
+                          />
                         );
                       })}
 
                       <div className="mt-6 flex justify-between">
                         <button
-                          className={`flex items-center ${currentPage === 0 ? 'bg-gray-200 cursor-not-allowed' : 'cursor-pointer bg-gray-300 hover:bg-gray-400'} text-gray-800 px-4 py-2 rounded`}
+                          className={`flex items-center ${currentPage === 0 ? 'bg-gray-200 cursor-not-allowed' : 'bg-gray-300 hover:bg-gray-400'} text-gray-800 px-4 py-2 rounded`}
                           onClick={prevPage}
                           disabled={currentPage === 0}
                         >
@@ -1435,13 +1454,13 @@ const Dashboard = () => {
 
                         <div className="flex space-x-2">
                           <button
-                            className="bg-gray-300 hover:bg-gray-400 text-gray-800 cursor-pointer px-4 py-2 rounded"
+                            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
                             onClick={resetQuestionnaire}
                           >
                             Reset
                           </button>
                           <button
-                            className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer px-4 py-2 rounded"
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
                             onClick={submitQuestionnaire}
                           >
                             View Results
@@ -1449,7 +1468,7 @@ const Dashboard = () => {
                         </div>
 
                         <button
-                          className={`flex items-center ${currentPage >= totalPages - 1 ? 'bg-gray-200 cursor-not-allowed' : 'cursor-pointer bg-gray-300 hover:bg-gray-400'} text-gray-800 px-4 py-2 rounded`}
+                          className={`flex items-center ${currentPage >= totalPages - 1 ? 'bg-gray-200 cursor-not-allowed' : 'bg-gray-300 hover:bg-gray-400'} text-gray-800 px-4 py-2 rounded`}
                           onClick={nextPage}
                           disabled={currentPage >= totalPages - 1}
                         >
@@ -1466,65 +1485,110 @@ const Dashboard = () => {
                           <h3 className="text-xl font-bold">Assessment Results</h3>
                         </div>
                         <div className="p-4">
+                          <div className="mb-4">
+                            <h4 className="text-lg font-medium mb-2">Overall Compliance Score</h4>
+                            <div className="flex items-center mb-2">
+                              <div className="flex-grow">
+                                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                                  <div
+                                    className="h-2.5 rounded-full"
+                                    style={{
+                                      width: `${moduleScore.percentage}%`,
+                                      backgroundColor: complianceLevel.color
+                                    }}
+                                  ></div>
+                                </div>
+                              </div>
+                              <span className="ml-4 font-bold">
+                                {moduleScore.percentage}%
+                              </span>
+                            </div>
+                            <div className="flex items-center">
+                              <span className="mr-2" style={{ color: complianceLevel.color }}>
+                                {complianceLevel.icon}
+                              </span>
+                              <span style={{ color: complianceLevel.color }}>
+                                {complianceLevel.level}
+                              </span>
+                            </div>
+                            <div className="mt-2 text-sm text-gray-600">
+                              Questions Answered: {progress.answered} of {progress.total} ({progress.percentage}%)
+                            </div>
+                          </div>
+
+                          {/* Scoring Methodology Explanation */}
+                          <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <h4 className="text-lg font-medium mb-3 text-blue-800 flex items-center">
+                              <Info size={20} className="mr-2" />
+                              How Your Score is Calculated
+                            </h4>
+                            <div className="space-y-3 text-sm">
+                              <div className="bg-white rounded p-3">
+                                <p className="font-medium text-gray-800 mb-2">📊 Scoring Method:</p>
+                                <p className="text-gray-700">Each question is scored based on response quality, with the first option being the highest score and subsequent options receiving progressively lower scores. "Not Applicable" responses are excluded from scoring to ensure fair assessment.</p>
+                              </div>
+                              <div className="bg-white rounded p-3">
+                                <p className="font-medium text-gray-800 mb-2">✅ What Makes a "Good" Answer:</p>
+                                <ul className="text-gray-700 space-y-1 ml-4">
+                                  <li>• <strong>First options</strong> typically indicate full compliance, comprehensive implementation, or best practices</li>
+                                  <li>• <strong>Examples:</strong> "Yes, comprehensive assessment" or "Formal process exists" or "Fully compliant"</li>
+                                  <li>• These answers show proactive governance and mature AI practices</li>
+                                </ul>
+                              </div>
+                              <div className="bg-white rounded p-3">
+                                <p className="font-medium text-gray-800 mb-2">⚠️ What Makes a "Lower" Answer:</p>
+                                <ul className="text-gray-700 space-y-1 ml-4">
+                                  <li>• <strong>Later options</strong> indicate partial implementation, planned activities, or gaps</li>
+                                  <li>• <strong>Examples:</strong> "No assessment," "Planning stage," or "Limited implementation"</li>
+                                  <li>• These highlight areas needing improvement for compliance</li>
+                                </ul>
+                              </div>
+                              <div className="bg-white rounded p-3">
+                                <p className="font-medium text-gray-800 mb-2">🎯 Compliance Levels:</p>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
+                                  <div className="bg-green-50 p-2 rounded border border-green-200">
+                                    <span className="font-medium text-green-700">90-100%: High Compliance</span>
+                                    <p className="text-green-600 mt-1">Strong governance practices in place</p>
+                                  </div>
+                                  <div className="bg-yellow-50 p-2 rounded border border-yellow-200">
+                                    <span className="font-medium text-yellow-700">70-89%: Moderate Compliance</span>
+                                    <p className="text-yellow-600 mt-1">Good foundation, some improvements needed</p>
+                                  </div>
+                                  <div className="bg-red-50 p-2 rounded border border-red-200">
+                                    <span className="font-medium text-red-700">Below 70%: Low Compliance</span>
+                                    <p className="text-red-600 mt-1">Significant gaps requiring attention</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
 
                           {activeModule !== AI_MODULES.MAPPING && (
-                            <>
-                              <div className="mb-4">
-                                <h4 className="text-lg font-medium mb-2">Overall Compliance Score</h4>
-                                <div className="flex items-center mb-2">
-                                  <div className="flex-grow">
-                                    <div className="w-full bg-gray-200 rounded-full h-2.5">
-                                      <div
-                                        className="h-2.5 rounded-full"
-                                        style={{
-                                          width: `${moduleScore.percentage}%`,
-                                          backgroundColor: complianceLevel.color
-                                        }}
-                                      ></div>
-                                    </div>
-                                  </div>
-                                  <span className="ml-4 font-bold">
-                                    {moduleScore.percentage}%
-                                  </span>
-                                </div>
-                                <div className="flex items-center">
-                                  <span className="mr-2" style={{ color: complianceLevel.color }}>
-                                    {complianceLevel.icon}
-                                  </span>
-                                  <span style={{ color: complianceLevel.color }}>
-                                    {complianceLevel.level}
-                                  </span>
-                                </div>
-                                <div className="mt-2 text-sm text-gray-600">
-                                  Questions Answered: {progress.answered} of {progress.total} ({progress.percentage}%)
-                                </div>
+                            <div className="mt-8">
+                              <h4 className="text-lg font-medium mb-4">Category Breakdown</h4>
+                              <div className="h-64">
+                                <ResponsiveContainer width="100%" height="100%">
+                                  {activeModule === AI_MODULES.RESPONSIBLE_AI ? (
+                                    <RadarChart outerRadius={90} data={categoryScores}>
+                                      <PolarGrid />
+                                      <PolarAngleAxis dataKey="category" />
+                                      <PolarRadiusAxis domain={[0, 100]} />
+                                      <Radar name="Score" dataKey="percentage" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                                      <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
+                                    </RadarChart>
+                                  ) : (
+                                    <BarChart data={categoryScores}>
+                                      <CartesianGrid strokeDasharray="3 3" />
+                                      <XAxis dataKey="category" />
+                                      <YAxis domain={[0, 100]} />
+                                      <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
+                                      <Legend />
+                                      <Bar dataKey="percentage" name="Compliance Score" fill="#8884d8" />
+                                    </BarChart>
+                                  )}
+                                </ResponsiveContainer>
                               </div>
-                              <div className="mt-8">
-                                <h4 className="text-lg font-medium mb-4">Category Breakdown</h4>
-                                <div className="h-64">
-                                  <ResponsiveContainer width="100%" height="100%">
-                                    {activeModule === AI_MODULES.RESPONSIBLE_AI ? (
-                                      <RadarChart outerRadius={90} data={categoryScores}>
-                                        <PolarGrid />
-                                        <PolarAngleAxis dataKey="category" />
-                                        <PolarRadiusAxis domain={[0, 100]} />
-                                        <Radar name="Score" dataKey="percentage" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-                                        <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
-                                      </RadarChart>
-                                    ) : (
-                                      <BarChart data={categoryScores}>
-                                        <CartesianGrid strokeDasharray="3 3" />
-                                        <XAxis dataKey="category" />
-                                        <YAxis domain={[0, 100]} />
-                                        <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
-                                        <Legend />
-                                        <Bar dataKey="percentage" name="Compliance Score" fill="#8884d8" />
-                                      </BarChart>
-                                    )}
-                                  </ResponsiveContainer>
-                                </div>
-                              </div>
-                            </>
+                            </div>
                           )}
 
                           {activeModule === AI_MODULES.MAPPING && modelRecommendation && (
@@ -1548,30 +1612,100 @@ const Dashboard = () => {
                           )}
 
                           <div className="mt-8">
-                            <h4 className="text-lg font-medium mb-2">Areas for Improvement</h4>
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="text-lg font-medium">Areas for Improvement</h4>
+                              <Tooltip term="Areas for Improvement" definition="Categories scoring below 70% that need attention to enhance your AI governance maturity">
+                                <HelpCircle size={16} className="text-gray-400 hover:text-blue-500 cursor-help" />
+                              </Tooltip>
+                            </div>
                             <ul className="space-y-2">
                               {categoryScores
                                 .filter(cat => cat.percentage < 70)
                                 .map((cat, index) => (
-                                  <li key={index} className="rounded bg-gray-50 p-4">
-                                    <p className="font-medium">{cat.category}</p>
-                                    <p className="text-sm text-gray-600">
-                                      Current score: {cat.percentage}% - {cat.answeredQuestions}/{cat.questions} questions answered
-                                    </p>
+                                  <li key={index} className="rounded bg-gray-50 p-4 border-l-4 border-orange-400">
+                                    <div className="flex items-start justify-between">
+                                      <div className="flex-1">
+                                        <p className="font-medium text-gray-900">{cat.category}</p>
+                                        <p className="text-sm text-gray-600">
+                                          Current score: {cat.percentage}% - {cat.answeredQuestions}/{cat.questions} questions answered
+                                        </p>
+                                      </div>
+                                      <div className="ml-4">
+                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                          cat.percentage >= 50 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'
+                                        }`}>
+                                          {cat.percentage >= 50 ? 'Moderate Priority' : 'High Priority'}
+                                        </span>
+                                      </div>
+                                    </div>
+
+                                    {/* Quick learning tip for each category */}
+                                    <div className="mt-2 text-xs text-blue-600">
+                                      💡 Tip: {getCategoryLearningTip(cat.category, activeModule)}
+                                    </div>
                                   </li>
                                 ))}
                               {categoryScores.filter(cat => cat.percentage < 70).length === 0 && (
-                                <p className="text-green-600 italic">
+                                <p className="text-green-600 italic flex items-center">
+                                  <CheckCircle size={16} className="mr-2" />
                                   All categories show good compliance levels!
                                 </p>
                               )}
                             </ul>
                           </div>
 
+                          {/* Enhanced Recommendations with Learning Context */}
                           <div className="mt-8">
-                            <h4 className="text-lg font-medium mb-2">Recommendations</h4>
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="text-lg font-medium">Recommendations</h4>
+                              <Tooltip term="Recommendations" definition="Specific, actionable guidance based on your assessment results to improve compliance and governance practices">
+                                <HelpCircle size={16} className="text-gray-400 hover:text-blue-500 cursor-help" />
+                              </Tooltip>
+                            </div>
                             <div className="bg-gray-50 p-4 rounded">
-                              <p>{getRecommendations(categoryScores, activeModule)}</p>
+                              <div className="whitespace-pre-line">{getRecommendations(categoryScores, activeModule)}</div>
+
+                              {/* Context-aware learning links */}
+                              {(activeModule === AI_MODULES.RISK || activeModule === AI_MODULES.EO_14179 || activeModule === AI_MODULES.OMB_M25_21) && (
+                                <div className="mt-4 pt-4 border-t border-gray-200">
+                                  <p className="text-sm font-medium text-gray-700 mb-2">📚 Learn More:</p>
+                                  <div className="space-y-1">
+                                    {activeModule === AI_MODULES.RISK && (
+                                      <a
+                                        href="https://www.nist.gov/itl/ai-risk-management-framework"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-xs text-blue-600 hover:text-blue-800 underline flex items-center"
+                                      >
+                                        NIST AI RMF Implementation Guidance
+                                        <ArrowUpRight size={10} className="ml-1" />
+                                      </a>
+                                    )}
+                                    {activeModule === AI_MODULES.EO_14179 && (
+                                      <a
+                                        href="https://www.federalregister.gov/documents/2025/01/31/2025-02172/removing-barriers-to-american-leadership-in-artificial-intelligence"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-xs text-blue-600 hover:text-blue-800 underline flex items-center"
+                                      >
+                                        Executive Order 14179 Full Text
+                                        <ArrowUpRight size={10} className="ml-1" />
+                                      </a>
+                                    )}
+                                    {activeModule === AI_MODULES.OMB_M25_21 && (
+                                      <a
+                                        href="https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-xs text-blue-600 hover:text-blue-800 underline flex items-center"
+                                      >
+                                        OMB M-25-21 Implementation Guide
+                                        <ArrowUpRight size={10} className="ml-1" />
+                                      </a>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -1601,6 +1735,60 @@ const Dashboard = () => {
                 // Guide view
                 <div className="p-4">
                   <h3 className="text-lg mb-4">{AI_MODULES_INFO[activeModule].guideTitle}</h3>
+
+                  {/* Reference Documents - Show for specific modules */}
+                  {(activeModule === AI_MODULES.RISK || activeModule === AI_MODULES.EO_14179 || activeModule === AI_MODULES.OMB_M25_21) && (
+                    <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="flex items-start">
+                        <BookOpen size={20} className="mr-3 text-blue-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-sm text-blue-700 font-medium mb-2">📄 Official Reference Document:</p>
+                          {activeModule === AI_MODULES.RISK && (
+                            <div>
+                              <a
+                                href="https://www.nist.gov/itl/ai-risk-management-framework"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-sm text-blue-600 hover:text-blue-800 underline flex items-center mb-2"
+                              >
+                                NIST AI Risk Management Framework (AI RMF 1.0)
+                                <ArrowUpRight size={14} className="ml-1" />
+                              </a>
+                              <p className="text-xs text-gray-600">The official NIST framework this assessment is based on. Provides comprehensive guidance on managing AI risks throughout the lifecycle.</p>
+                            </div>
+                          )}
+                          {activeModule === AI_MODULES.EO_14179 && (
+                            <div>
+                              <a
+                                href="https://www.federalregister.gov/documents/2025/01/31/2025-02172/removing-barriers-to-american-leadership-in-artificial-intelligence"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-sm text-blue-600 hover:text-blue-800 underline flex items-center mb-2"
+                              >
+                                Executive Order 14179: Removing Barriers to American Leadership in Artificial Intelligence
+                                <ArrowUpRight size={14} className="ml-1" />
+                              </a>
+                              <p className="text-xs text-gray-600">The official Executive Order this assessment is designed to ensure compliance with. Read the full text for complete requirements and context.</p>
+                            </div>
+                          )}
+                          {activeModule === AI_MODULES.OMB_M25_21 && (
+                            <div>
+                              <a
+                                href="https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-sm text-blue-600 hover:text-blue-800 underline flex items-center mb-2"
+                              >
+                                OMB Memorandum M-25-21: Accelerating Federal Use of AI through Innovation, Governance, and Public Trust
+                                <ArrowUpRight size={14} className="ml-1" />
+                              </a>
+                              <p className="text-xs text-gray-600">The official OMB memorandum this assessment is based on. Contains detailed requirements for AI governance, documentation, and compliance.</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {GUIDE_CONTENT[activeModule].map((section, index) => (
                     <div key={index} className="mb-4 border rounded-lg overflow-hidden">
@@ -1637,7 +1825,7 @@ const Dashboard = () => {
 
       {/* Footer */}
       <footer className="bg-gray-800 text-white p-4 text-center">
-        <p>AI Governance Dashboard © 2025 - Last updated: August 27, 2025</p>
+        <p>AI Governance Dashboard © 2025 - Last updated: September 25, 2025</p>
       </footer>
     </div>
   );
