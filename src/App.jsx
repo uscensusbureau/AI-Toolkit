@@ -335,17 +335,17 @@ const EnhancedQuestion = ({ question, questionIndex, answers, activeModule, hand
               optionStyling = 'border-gray-300 bg-gray-50';
               scoreIndicator = '⚪';
             } else if (optIndex === 0) {
-              optionStyling = 'border-green-300 bg-green-50';
-              scoreIndicator = '🟢';
+              optionStyling = 'border-gray-300 bg-gray-50';
+              scoreIndicator = '⚪';
             } else if (optIndex === 1) {
-              optionStyling = 'border-blue-300 bg-blue-50';
-              scoreIndicator = '🔵';
+              optionStyling = 'border-gray-300 bg-gray-50';
+              scoreIndicator = '⚪';
             } else if (optIndex === question.options.length - 1 && option !== "Not Applicable" && option !== "NA") {
-              optionStyling = 'border-red-300 bg-red-50';
-              scoreIndicator = '🔴';
+              optionStyling = 'border-gray-300 bg-gray-50';
+              scoreIndicator = '⚪';
             } else {
-              optionStyling = 'border-yellow-300 bg-yellow-50';
-              scoreIndicator = '🟡';
+              optionStyling = 'border-gray-300 bg-gray-50';
+              scoreIndicator = '⚪';
             }
 
             return (
@@ -377,6 +377,7 @@ const EnhancedQuestion = ({ question, questionIndex, answers, activeModule, hand
     </div>
   );
 };
+ 
 
 // Term definitions for tooltips
 const TERM_DEFINITIONS = {
