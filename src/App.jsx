@@ -26,6 +26,9 @@ const calculateModuleScore = (answers, module) => {
     const question = questions[parseInt(qIndex)];
     if (!question || !question.options) return;
 
+    // Skip "Not Applicable" or "NA" answers in scoring
+    if (answer === "Not Applicable" || answer === "NA") return;
+
     const optionIndex = question.options.indexOf(answer);
     const weight = question.weight || 1;
 
@@ -75,6 +78,7 @@ const getCategoryLearningTip = (category, module) => {
   return tips[category] || tips.default;
 };
 
+// Get model recommendations based on selected options
 const getModelRecommendation = (answers) => {
   if (!answers || !answers[AI_MODULES.MAPPING]) return null;
 
@@ -140,6 +144,15 @@ const getCategoryScores = (answers, module) => {
     if (!question || !question.category || !question.options) return;
 
     const category = question.category;
+
+    // Count as answered regardless of NA status
+    if (categories[category]) {
+      categories[category].answeredQuestions += 1;
+    }
+
+    // Skip "Not Applicable" or "NA" answers in scoring
+    if (answer === "Not Applicable" || answer === "NA") return;
+
     const optionIndex = question.options.indexOf(answer);
     const weight = question.weight || 1;
 
@@ -149,7 +162,6 @@ const getCategoryScores = (answers, module) => {
     if (categories[category]) {
       categories[category].score += optionScore * weight;
       categories[category].maxScore += question.options.length * weight;
-      categories[category].answeredQuestions += 1;
     }
   });
 
@@ -178,6 +190,8 @@ const getRecommendations = (categoryScores, module) => {
     [AI_MODULES.REGULATION]: `To enhance regulatory compliance, prioritize improvements in ${categoriesList}. Consider implementing a more formal governance structure with clear documentation and review processes for these aspects.`,
     [AI_MODULES.RESPONSIBLE_AI]: `To strengthen responsible AI practices, focus on improvements in ${categoriesList}. Implementing regular audits and creating more robust processes in these areas will enhance your overall responsible AI framework.`,
     [AI_MODULES.RISK]: `For better risk management, strengthen your approach to ${categoriesList}. Establish clearer ownership of risks in these categories and implement regular review cycles to address emerging concerns.`,
+    [AI_MODULES.OMB_M25_21]: getOMBSpecificRecommendations(lowScoreCategories),
+    [AI_MODULES.EO_14179]: getEOSpecificRecommendations(lowScoreCategories),
     [AI_MODULES.TITLE_13]: `To improve Title 13 compliance, focus on strengthening ${categoriesList}. Implement additional safeguards and documentation in these areas to ensure proper protection of statistical data and compliance with confidentiality requirements.`
   };
 
@@ -277,6 +291,9 @@ const EnhancedQuestion = ({ question, questionIndex, answers, activeModule, hand
 
   const contextHelp = getContextualHelp(question.question, question.category);
 
+  // Check if this is the AI Mapping module - no color coding for mapping
+  const isMappingModule = activeModule === AI_MODULES.MAPPING;
+
   return (
     <div className="mb-4 border rounded-lg overflow-hidden">
       <div className="bg-gray-100 p-4">
@@ -327,25 +344,28 @@ const EnhancedQuestion = ({ question, questionIndex, answers, activeModule, hand
       <div className="p-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {question.options.map((option, optIndex) => {
-            // Determine styling based on option position
+            // For mapping module, use neutral styling for all options
             let optionStyling = 'border-gray-300';
             let scoreIndicator = '';
 
-            if (option === "Not Applicable" || option === "NA") {
-              optionStyling = 'border-gray-300 bg-gray-50';
-              scoreIndicator = '⚪';
-            } else if (optIndex === 0) {
-              optionStyling = 'border-green-300 bg-green-50';
-              scoreIndicator = '🟢';
-            } else if (optIndex === 1) {
-              optionStyling = 'border-blue-300 bg-blue-50';
-              scoreIndicator = '🔵';
-            } else if (optIndex === question.options.length - 1 && option !== "Not Applicable" && option !== "NA") {
-              optionStyling = 'border-red-300 bg-red-50';
-              scoreIndicator = '🔴';
-            } else {
-              optionStyling = 'border-yellow-300 bg-yellow-50';
-              scoreIndicator = '🟡';
+            if (!isMappingModule) {
+              // Only apply color coding and score indicators for non-mapping modules
+              if (option === "Not Applicable" || option === "NA") {
+                optionStyling = 'border-gray-300 bg-gray-50';
+                scoreIndicator = '⚪';
+              } else if (optIndex === 0) {
+                optionStyling = 'border-green-300 bg-green-50';
+                scoreIndicator = '🟢';
+              } else if (optIndex === 1) {
+                optionStyling = 'border-blue-300 bg-blue-50';
+                scoreIndicator = '🔵';
+              } else if (optIndex === question.options.length - 1 && option !== "Not Applicable" && option !== "NA") {
+                optionStyling = 'border-red-300 bg-red-50';
+                scoreIndicator = '🔴';
+              } else {
+                optionStyling = 'border-yellow-300 bg-yellow-50';
+                scoreIndicator = '🟡';
+              }
             }
 
             return (
@@ -355,23 +375,12 @@ const EnhancedQuestion = ({ question, questionIndex, answers, activeModule, hand
                 onClick={() => handleAnswer(questionIndex, option)}
               >
                 <div className="flex items-start">
-                  <span className="mr-2 text-xs mt-1">{scoreIndicator}</span>
+                  {!isMappingModule && <span className="mr-2 text-xs mt-1">{scoreIndicator}</span>}
                   <span className="flex-1">{option}</span>
                 </div>
               </button>
             );
           })}
-        </div>
-
-        {/* Score Legend */}
-        <div className="mt-3 p-2 bg-gray-50 rounded text-xs">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="font-medium text-gray-700">Score Impact:</span>
-            <span className="flex items-center"><span className="mr-1">🟢</span>Best (High Score)</span>
-            <span className="flex items-center"><span className="mr-1">🔵🟡</span>Good/Moderate</span>
-            <span className="flex items-center"><span className="mr-1">🔴</span>Needs Improvement</span>
-            <span className="flex items-center"><span className="mr-1">⚪</span>Not Scored</span>
-          </div>
         </div>
       </div>
     </div>
@@ -624,54 +633,6 @@ const LandingPage = ({ onLaunchDashboard }) => {
             </div>
           </section>
 
-          {/* Available Assessment Modules Section */}
-          <section className="bg-white rounded-lg shadow p-8">
-            <h2 className="text-3xl font-bold mb-6 text-blue-600">Available Assessment Modules</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {Object.entries(AI_MODULES_INFO).map(([key, module]) => (
-                <div key={key} className="bg-white rounded-lg p-6 shadow hover:shadow-md transform hover:scale-105 transition-all duration-200 border border-gray-100">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 bg-blue-600 rounded-lg mr-3 flex items-center justify-center shadow-sm">
-                      {key === AI_MODULES.MAPPING && <BarChart3 size={20} className="text-white" />}
-                      {key === AI_MODULES.REGULATION && <FileText size={20} className="text-white" />}
-                      {key === AI_MODULES.RESPONSIBLE_AI && <CheckCircle size={20} className="text-white" />}
-                      {key === AI_MODULES.RISK && <AlertTriangle size={20} className="text-white" />}
-                      {key === AI_MODULES.OMB_M25_21 && <Shield size={20} className="text-white" />}
-                      {key === AI_MODULES.EO_14179 && <BookOpen size={20} className="text-white" />}
-                      {key === AI_MODULES.TITLE_13 && <FileText size={20} className="text-white" />}
-                    </div>
-                    <h3 className="font-bold text-lg text-gray-900">{module.title}</h3>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-4 leading-relaxed">{module.description}</p>
-                  <div className="bg-gray-100 rounded-lg p-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-medium text-gray-700">
-                        Assessment Questions
-                      </span>
-                      <span className="text-sm font-bold px-2 py-1 rounded-full text-white bg-blue-500">
-                        {QUESTIONNAIRES[key]?.length || 0}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Call to Action */}
-            <div className="bg-blue-600 rounded-lg p-8 text-center shadow">
-              <div className="bg-white bg-opacity-10 rounded-lg p-6 backdrop-blur-sm">
-                <h3 className="text-2xl font-bold mb-3">Ready to Get Started?</h3>
-                <p className="text-lg mb-6 text-gray-700">Begin your AI governance assessment and ensure compliance across your AI lifecycle.</p>
-                <button
-                  onClick={onLaunchDashboard}
-                  className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-bold text-lg shadow transform hover:scale-105 transition-all duration-200"
-                >
-                  Launch Assessment Dashboard
-                </button>
-              </div>
-            </div>
-          </section>
-
           {/* Quick Start Guide Section */}
           <section className="bg-white rounded-lg shadow p-8">
             <h2 className="text-3xl font-bold mb-6 text-blue-600">Quick Start Guide</h2>
@@ -786,6 +747,54 @@ const LandingPage = ({ onLaunchDashboard }) => {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Available Assessment Modules Section */}
+          <section className="bg-white rounded-lg shadow p-8">
+            <h2 className="text-3xl font-bold mb-6 text-blue-600">Available Assessment Modules</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {Object.entries(AI_MODULES_INFO).map(([key, module]) => (
+                <div key={key} className="bg-white rounded-lg p-6 shadow hover:shadow-md transform hover:scale-105 transition-all duration-200 border border-gray-100">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-blue-600 rounded-lg mr-3 flex items-center justify-center shadow-sm">
+                      {key === AI_MODULES.MAPPING && <BarChart3 size={20} className="text-white" />}
+                      {key === AI_MODULES.REGULATION && <FileText size={20} className="text-white" />}
+                      {key === AI_MODULES.RESPONSIBLE_AI && <CheckCircle size={20} className="text-white" />}
+                      {key === AI_MODULES.RISK && <AlertTriangle size={20} className="text-white" />}
+                      {key === AI_MODULES.OMB_M25_21 && <Shield size={20} className="text-white" />}
+                      {key === AI_MODULES.EO_14179 && <BookOpen size={20} className="text-white" />}
+                      {key === AI_MODULES.TITLE_13 && <FileText size={20} className="text-white" />}
+                    </div>
+                    <h3 className="font-bold text-lg text-gray-900">{module.title}</h3>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-4 leading-relaxed">{module.description}</p>
+                  <div className="bg-gray-100 rounded-lg p-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium text-gray-700">
+                        Assessment Questions
+                      </span>
+                      <span className="text-sm font-bold px-2 py-1 rounded-full text-white bg-blue-500">
+                        {QUESTIONNAIRES[key]?.length || 0}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Call to Action */}
+            <div className="bg-blue-600 rounded-lg p-8 text-center shadow">
+              <div className="bg-white bg-opacity-10 rounded-lg p-6 backdrop-blur-sm">
+                <h3 className="text-2xl font-bold mb-3">Ready to Get Started?</h3>
+                <p className="text-lg mb-6 text-gray-700">Begin your AI governance assessment and ensure compliance across your AI lifecycle.</p>
+                <button
+                  onClick={onLaunchDashboard}
+                  className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-bold text-lg shadow transform hover:scale-105 transition-all duration-200"
+                >
+                  Launch Assessment Dashboard
+                </button>
               </div>
             </div>
           </section>
@@ -1317,7 +1326,7 @@ const Dashboard = () => {
 
                   <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                     <div className="flex items-start">
-                      <Info size={20} className="mr-3 text-blue-500 mt-0.5 flex-shrink-0" />
+                      <Info size={20} className="mr-3 text-blue-500 flex-shrink-0" />
                       <div>
                         <p className="text-sm text-blue-700 font-medium mb-1">📖 Need help with terminology or concepts?</p>
                         <p className="text-sm text-blue-600">
@@ -1339,9 +1348,9 @@ const Dashboard = () => {
                       </div>
                       <span className="text-xs text-green-600 bg-green-100 px-2 py-1 rounded">Always On</span>
                     </div>
-                    <div className="text-xs text-green-700 mt-1">
-                      Look for <HelpCircle size={12} className="inline mx-1" /> icons to explore policy context, hover over <Tooltip term="Example Term" definition="This is how tooltips work">underlined terms</Tooltip> for definitions, and discover learning aids throughout your assessment.
-                    </div>
+                    <p className="text-xs text-green-700 mt-1">
+                      Look for <HelpCircle size={12} className="inline mx-1" /> icons to explore policy context, hover over <ExplanationTooltip term="Example Term" definition="This is how tooltips work">underlined terms</ExplanationTooltip> for definitions, and discover learning aids throughout your assessment.
+                    </p>
                   </div>
                   {(activeModule === AI_MODULES.RISK || activeModule === AI_MODULES.EO_14179 || activeModule === AI_MODULES.OMB_M25_21) && (
                     <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
@@ -1420,13 +1429,26 @@ const Dashboard = () => {
                         {/* Scoring Tip */}
                         <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded">
                           <div className="flex items-start">
-                            <Info size={16} className="text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+                            <Info size={16} className="text-blue-500 mr-2 flex-shrink-0" />
                             <div className="text-xs text-blue-700">
                               <span className="font-medium">Scoring Tip:</span> First options typically indicate best practices and full compliance (highest scores), while later options show areas needing improvement (lower scores). "Not Applicable" responses don't affect your score.
                             </div>
                           </div>
                         </div>
                       </div>
+
+                      {/* Score Impact Legend - shown once at top for non-mapping modules */}
+                      {activeModule !== AI_MODULES.MAPPING && (
+                        <div className="mb-4 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                          <div className="flex flex-wrap items-center gap-3 text-sm">
+                            <span className="font-medium text-gray-700">Score Impact Legend:</span>
+                            <span className="flex items-center"><span className="mr-1">🟢</span>Best (High Score)</span>
+                            <span className="flex items-center"><span className="mr-1">🔵🟡</span>Good/Moderate</span>
+                            <span className="flex items-center"><span className="mr-1">🔴</span>Needs Improvement</span>
+                            <span className="flex items-center"><span className="mr-1">⚪</span>Not Scored</span>
+                          </div>
+                        </div>
+                      )}
 
                       {currentQuestions.map((q, index) => {
                         const absoluteIndex = currentPage * questionsPerPage + index;
@@ -1614,9 +1636,9 @@ const Dashboard = () => {
                           <div className="mt-8">
                             <div className="flex items-center justify-between mb-2">
                               <h4 className="text-lg font-medium">Areas for Improvement</h4>
-                              <Tooltip term="Areas for Improvement" definition="Categories scoring below 70% that need attention to enhance your AI governance maturity">
+                              <ExplanationTooltip term="Areas for Improvement" definition="Categories scoring below 70% that need attention to enhance your AI governance maturity">
                                 <HelpCircle size={16} className="text-gray-400 hover:text-blue-500 cursor-help" />
-                              </Tooltip>
+                              </ExplanationTooltip>
                             </div>
                             <ul className="space-y-2">
                               {categoryScores
@@ -1658,9 +1680,9 @@ const Dashboard = () => {
                           <div className="mt-8">
                             <div className="flex items-center justify-between mb-2">
                               <h4 className="text-lg font-medium">Recommendations</h4>
-                              <Tooltip term="Recommendations" definition="Specific, actionable guidance based on your assessment results to improve compliance and governance practices">
+                              <ExplanationTooltip term="Recommendations" definition="Specific, actionable guidance based on your assessment results to improve compliance and governance practices">
                                 <HelpCircle size={16} className="text-gray-400 hover:text-blue-500 cursor-help" />
-                              </Tooltip>
+                              </ExplanationTooltip>
                             </div>
                             <div className="bg-gray-50 p-4 rounded">
                               <div className="whitespace-pre-line">{getRecommendations(categoryScores, activeModule)}</div>
@@ -1825,7 +1847,7 @@ const Dashboard = () => {
 
       {/* Footer */}
       <footer className="bg-gray-800 text-white p-4 text-center">
-        <p>AI Governance Dashboard © 2025 - Last updated: September 25, 2025</p>
+        <p>AI Governance Dashboard © 2025 - Last updated: May 7, 2025</p>
       </footer>
     </div>
   );
