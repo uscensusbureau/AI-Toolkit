@@ -1,3 +1,4 @@
+// Enhanced model recommendations based on different combinations with specific ML models
 const MODEL_RECOMMENDATIONS = {
   // Tabular data - Classification recommendations
   "Tabular data-Classification-Supervised learning-High interpretability is essential": {
@@ -32,7 +33,7 @@ const MODEL_RECOMMENDATIONS = {
     ],
     libraries: "sklearn.cluster.KMeans, sklearn.cluster.AgglomerativeClustering, sklearn.cluster.DBSCAN"
   },
-  
+
   // Tabular data - Regression recommendations
   "Tabular data-Regression-Supervised learning-High interpretability is essential": {
     recommendations: [
@@ -58,7 +59,7 @@ const MODEL_RECOMMENDATIONS = {
     ],
     libraries: "xgboost.XGBRegressor, lightgbm.LGBMRegressor, tensorflow.keras.Sequential"
   },
-  
+
   // Tabular data - Anomaly Detection
   "Tabular data-Anomaly detection-Unsupervised learning-Performance is more important than interpretability": {
     recommendations: [
@@ -68,7 +69,7 @@ const MODEL_RECOMMENDATIONS = {
     ],
     libraries: "sklearn.ensemble.IsolationForest, sklearn.svm.OneClassSVM, tensorflow.keras.Sequential"
   },
-  
+
   // Text data recommendations
   "Text data-Classification-Supervised learning-High interpretability is essential": {
     recommendations: [
@@ -94,7 +95,7 @@ const MODEL_RECOMMENDATIONS = {
     ],
     libraries: "transformers.DistilBertModel, optimum.onnxruntime, fasttext"
   },
-  
+
   // Image data recommendations
   "Image data-Classification-Supervised learning-Limited (personal computer)": {
     recommendations: [
@@ -120,7 +121,7 @@ const MODEL_RECOMMENDATIONS = {
     ],
     libraries: "tensorflow.keras.Sequential, pytorch_lightning, pyod.models.deep_svdd"
   },
-  
+
   // Time series data recommendations
   "Time series data-Forecasting-Supervised learning-High interpretability is essential": {
     recommendations: [
@@ -146,7 +147,7 @@ const MODEL_RECOMMENDATIONS = {
     ],
     libraries: "tensorflow.keras.Sequential, sklearn.ensemble.IsolationForest, statsmodels.tsa.arima.model.ARIMA"
   },
-  
+
   // Default recommendations for combinations not explicitly covered
   "default": {
     recommendations: [

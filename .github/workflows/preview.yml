@@ -33,7 +33,7 @@ jobs:
         run: |
           REPO_NAME="${GITHUB_REPOSITORY##*/}"
           echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
-          echo "BASE=/$REPO_NAME/pr-preview/pr-${{ github.event.number }}" >> "$GITHUB_ENV"
+          echo "BASE=$REPO_NAME/pr-preview/pr-${{ github.event.number }}/" >> "$GITHUB_ENV"
 
       - name: Install and Build
         if: github.event.action != 'closed' # Skip the build if the PR has been closed
@@ -43,4 +43,4 @@ jobs:
         uses: rossjrw/pr-preview-action@v1
         with:
           source-dir: ./dist/
-    
+
