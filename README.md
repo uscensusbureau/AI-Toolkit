@@ -1,6 +1,14 @@
 # AI Tookit
 A proof-of-concept React + Vite website for the AI Toolkit. In its current state this application is not intended for production deployment.
 
+## Status
+**This repository has been archived and is no longer maintained.**
+
+The code is provided for historical reference and may contain unpatched or unknown
+vulnerabilities.
+
+It should not be used in production systems.
+
 ## Installation
 
 In the project directory, run:
